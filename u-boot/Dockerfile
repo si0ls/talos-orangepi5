@@ -75,7 +75,7 @@ WORKDIR /u-boot/src
 RUN find /u-boot/patches -name '*.patch' -type f | sort | while read patch; do patch -p1 < "$patch"; done
 
 ENV ROCKCHIP_TPL=/u-boot/rkbin/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.16.bin
-ENV BL31=/u-boot/rkbin/bin/rk35/rk3588_bl31_v1.27.elf
+ENV BL31=/u-boot/rkbin/bin/rk35/rk3588_bl31_v1.45.elf
 
 WORKDIR /u-boot/src
 RUN --mount=type=cache,target=/u-boot/build \
