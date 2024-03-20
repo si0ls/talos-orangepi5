@@ -92,7 +92,7 @@ target "imager" {
   context = "./imager/talos"
   file = "./imager/talos/Dockerfile"
   platform = "linux/arm64"
-  targets = ["imager"]
+  target = "imager"
   contexts = {
     pkg-kernel = "target:kernel"
   }
