@@ -1,0 +1,77 @@
+diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
+index a7b30e1..210a6fb 100644
+--- a/arch/arm64/boot/dts/rockchip/Makefile
++++ b/arch/arm64/boot/dts/rockchip/Makefile
+@@ -116,3 +116,5 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-indiedroid-nova.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-khadas-edge2.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-rock-5a.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-orangepi-5.dtb
++
++subdir-y       := $(dts-dirs) overlay
+diff --git a/arch/arm64/boot/dts/rockchip/overlay/Makefile b/arch/arm64/boot/dts/rockchip/overlay/Makefile
+new file mode 100644
+index 0000000..c68d6e0
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/overlay/Makefile
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0
++dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
++	rockchip-rk3588-sata1.dtbo \
++	rockchip-rk3588-sata2.dtbo
++
++targets += $(dtbo-y)
++
++always         := $(dtbo-y)
++clean-files    := *.dtbo
+diff --git a/arch/arm64/boot/dts/rockchip/overlay/rockchip-rk3588-sata1.dts b/arch/arm64/boot/dts/rockchip/overlay/rockchip-rk3588-sata1.dts
+new file mode 100644
+index 0000000..2759ab9
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/overlay/rockchip-rk3588-sata1.dts
+@@ -0,0 +1,20 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++	fragment@0 {
++		target = <&pcie2x1l0>;
++
++		__overlay__ {
++			status = "disabled";
++		};
++	};
++
++	fragment@1 {
++		target = <&sata1>;
++
++		__overlay__ {
++			status = "okay";
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/rockchip/overlay/rockchip-rk3588-sata2.dts b/arch/arm64/boot/dts/rockchip/overlay/rockchip-rk3588-sata2.dts
+new file mode 100644
+index 0000000..c68e11d
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/overlay/rockchip-rk3588-sata2.dts
+@@ -0,0 +1,20 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++	fragment@0 {
++		target = <&pcie2x1l1>;
++
++		__overlay__ {
++			status = "disabled";
++		};
++	};
++
++	fragment@1 {
++		target = <&sata2>;
++
++		__overlay__ {
++			status = "okay";
++		};
++	};
++};

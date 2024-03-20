@@ -1,0 +1,196 @@
+From a422b99347982b210ab1fa02e62833c7598d622d Mon Sep 17 00:00:00 2001
+From: Louis SCHNEIDER <louis@schne.id>
+Date: Fri, 15 Mar 2024 15:45:54 +0100
+Subject: [PATCH] feat: add kernel version overriding
+
+Add a Makefile argument KERNEL_VERSION thats override the DefaultKernelVersion in Talos codebase to allow easy upstream kernel version testing.
+
+Signed-off-by: Louis SCHNEIDER <louis@schne.id>
+---
+ Dockerfile                           | 28 ++++++++++++++++++++++++++++
+ Makefile                             |  2 ++
+ pkg/machinery/constants/constants.go | 14 +++++++++++---
+ 3 files changed, 41 insertions(+), 3 deletions(-)
+
+diff --git a/Dockerfile b/Dockerfile
+index 97fa15b4ea..18e9e4f53c 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -357,6 +357,8 @@ WORKDIR /src/internal/app/init
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=amd64 GOAMD64=${GOAMD64} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /init
+ RUN chmod +x /init
+ 
+@@ -364,6 +366,8 @@ FROM base AS init-build-arm64
+ WORKDIR /src/internal/app/init
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=arm64 go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /init
+ RUN chmod +x /init
+ 
+@@ -379,6 +383,8 @@ WORKDIR /src/internal/app/machined
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=amd64 GOAMD64=${GOAMD64} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /machined
+ RUN chmod +x /machined
+ 
+@@ -386,6 +392,8 @@ FROM base AS machined-build-arm64
+ WORKDIR /src/internal/app/machined
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=arm64 go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /machined
+ RUN chmod +x /machined
+ 
+@@ -401,6 +409,8 @@ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=amd64 GOAMD64=${GOAMD64} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-linux-amd64
+ RUN chmod +x /talosctl-linux-amd64
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-linux-amd64
+@@ -409,6 +419,8 @@ FROM base AS talosctl-linux-arm64-build
+ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=arm64 go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-linux-arm64
+ RUN chmod +x /talosctl-linux-arm64
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-linux-arm64
+@@ -417,6 +429,8 @@ FROM base AS talosctl-linux-armv7-build
+ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=arm GOARM=7 go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-linux-armv7
+ RUN chmod +x /talosctl-linux-armv7
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-linux-armv7
+@@ -426,6 +440,8 @@ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=darwin GOARCH=amd64 GOAMD64=${GOAMD64} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-darwin-amd64
+ RUN chmod +x /talosctl-darwin-amd64
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-darwin-amd64
+@@ -434,6 +450,8 @@ FROM base AS talosctl-darwin-arm64-build
+ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=darwin GOARCH=arm64 go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-darwin-arm64
+ RUN chmod +x /talosctl-darwin-arm64
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" talosctl-darwin-arm64
+@@ -443,6 +461,8 @@ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=windows GOARCH=amd64 GOAMD64=${GOAMD64} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-windows-amd64.exe
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-windows-amd64.exe
+ 
+@@ -451,6 +471,8 @@ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=freebsd GOARCH=amd64 GOAMD64=${GOAMD64} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-freebsd-amd64
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-freebsd-amd64
+ 
+@@ -458,6 +480,8 @@ FROM base AS talosctl-freebsd-arm64-build
+ WORKDIR /src/cmd/talosctl
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=freebsd GOARCH=arm64 go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talosctl-freebsd-arm64
+ RUN touch --date="@${SOURCE_DATE_EPOCH}" /talosctl-freebsd-arm64
+ 
+@@ -756,6 +780,8 @@ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ WORKDIR /src/cmd/installer
+ ARG TARGETARCH
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ RUN --mount=type=cache,target=/.cache GOOS=linux GOARCH=${TARGETARCH} go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /installer
+ RUN chmod +x /installer
+ 
+@@ -924,6 +950,8 @@ FROM build-go AS module-sig-verify-linux-build
+ ARG GO_BUILDFLAGS
+ ARG GO_LDFLAGS
+ ARG GOAMD64
++ARG KERNEL_VERSION
++ENV TALOS_KERNEL_VERSION=${KERNEL_VERSION}
+ WORKDIR /src/module-sig-verify
+ COPY ./hack/module-sig-verify/go.mod ./hack/module-sig-verify/go.sum ./
+ RUN --mount=type=cache,target=/.cache go mod download
+diff --git a/Makefile b/Makefile
+index 1a2533d1eb..94548960a4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -47,6 +47,7 @@ PKG_UTIL_LINUX ?= $(PKGS_PREFIX)/util-linux:$(PKGS)
+ PKG_KMOD ?= $(PKGS_PREFIX)/kmod:$(PKGS)
+ PKG_KERNEL ?= $(PKGS_PREFIX)/kernel:$(PKGS)
+ PKG_TALOSCTL_CNI_BUNDLE_INSTALL ?= $(PKGS_PREFIX)/talosctl-cni-bundle-install:$(EXTRAS)
++KERNEL_VERSION ?= "6.6.21-talos"
+ 
+ # renovate: datasource=github-tags depName=golang/go
+ GO_VERSION ?= 1.22
+@@ -201,6 +202,7 @@ COMMON_ARGS += --build-arg=PKG_U_BOOT=$(PKG_U_BOOT)
+ COMMON_ARGS += --build-arg=PKG_RASPBERYPI_FIRMWARE=$(PKG_RASPBERYPI_FIRMWARE)
+ COMMON_ARGS += --build-arg=PKG_KERNEL=$(PKG_KERNEL)
+ COMMON_ARGS += --build-arg=PKG_TALOSCTL_CNI_BUNDLE_INSTALL=$(PKG_TALOSCTL_CNI_BUNDLE_INSTALL)
++COMMON_ARGS += --build-arg=KERNEL_VERSION=$(KERNEL_VERSION)
+ COMMON_ARGS += --build-arg=ABBREV_TAG=$(ABBREV_TAG)
+ 
+ CI_ARGS ?=
+diff --git a/pkg/machinery/constants/constants.go b/pkg/machinery/constants/constants.go
+index bf2005e293..702a23fc78 100644
+--- a/pkg/machinery/constants/constants.go
++++ b/pkg/machinery/constants/constants.go
+@@ -8,16 +8,24 @@
+ package constants
+ 
+ import (
++	"os"
+ 	"time"
+ 
+ 	cni "github.com/containerd/go-cni"
+ 	"github.com/siderolabs/crypto/x509"
+ )
+ 
+-const (
+-	// DefaultKernelVersion is the default Linux kernel version.
+-	DefaultKernelVersion = "6.6.21-talos"
++// DefaultKernelVersion is the default Linux kernel version.
++var DefaultKernelVersion = "6.6.21-talos"
++
++func init() {
++	// Get the default kernel version from the environment.
++	if v := os.Getenv("TALOS_KERNEL_VERSION"); v != "" {
++		DefaultKernelVersion = v
++	}
++}
+ 
++const (
+ 	// KernelModulesPath is the default path to the kernel modules without the kernel version.
+ 	KernelModulesPath = "/lib/modules"
+ 
