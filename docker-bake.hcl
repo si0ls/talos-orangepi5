@@ -72,6 +72,9 @@ target "installer" {
   context = "./installer"
   file = "./installer/Dockerfile"
   platform = "linux/arm64"
+  contexts = {
+    kernel = "target:kernel"
+  }
   tags = ["${REGISTRY}/${USERNAME}/talos-opi5-installer:${TAG}"]
   labels = {
     "kernel.version" = "${KERNEL_VERSION}"
@@ -79,6 +82,9 @@ target "installer" {
     "org.opencontainers.image.description" = "Overlay installer for the Orange Pi 5"
     "org.opencontainers.image.author" = "Louis S. <louis@schne.id>"
     "org.opencontainers.image.vendor" = "Louis S. <louis@schne.id>"
+  }
+  args = {
+    KERNEL = "${REGISTRY}/${USERNAME}/talos-opi5-kernel:${KERNEL_VERSION}-${TAG}"
   }
 }
 

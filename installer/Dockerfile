@@ -1,3 +1,7 @@
+ARG KERNEL
+
+FROM ${KERNEL} AS kernel
+
 FROM golang:1.22-bookworm AS builder
 
 COPY go.mod go.sum /installer/
@@ -18,5 +22,6 @@ RUN --mount=type=cache,target=/.cache/gomod \
 
 FROM scratch AS installer
 
+COPY --from=kernel /dtb/rockchip/rk3588s-orangepi-5.dtb /artifacts/arm64/dtb/rk3588s-orangepi-5.dtb
 COPY --from=builder /orangepi-5 /orangepi-5
 COPY profile.yaml /orangepi-5.yaml
