@@ -74,14 +74,13 @@ COPY ./patches /u-boot/patches
 WORKDIR /u-boot/src
 RUN find /u-boot/patches -name '*.patch' -type f | sort | while read patch; do patch -p1 < "$patch"; done
 
-ENV O=/u-boot/build
 ENV ROCKCHIP_TPL=/u-boot/rkbin/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin
 ENV BL31=/u-boot/rkbin/bin/rk35/rk3588_bl31_v1.27.elf
 
 WORKDIR /u-boot/src
 RUN --mount=type=cache,target=/u-boot/build \
-    make -j$(nproc) mrproper && \
-    make -j$(nproc) orangepi-5-rk3588s_defconfig && \
+    make O=/u-boot/build -j$(nproc) mrproper && \
+    make O=/u-boot/build -j$(nproc) orangepi-5-rk3588s_defconfig && \
     make O=/u-boot/build -j$(nproc) HOSTLDLIBS_mkimage="-lssl -lcrypto"
 
 WORKDIR /u-boot
