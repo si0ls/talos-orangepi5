@@ -1,4 +1,4 @@
-name: main
+name: Build Talos for Orange Pi 5
 on:
   push:
     branches:
