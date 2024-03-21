@@ -5,10 +5,7 @@ on:
 jobs:
   my-job:
     name: Delete all caches
-    runs-on:
-      - self-hosted
-      - talos-orangepi5
-
+    runs-on: ubuntu-latest
     steps:
       - name: Clear caches
         uses: easimon/wipe-cache@main
