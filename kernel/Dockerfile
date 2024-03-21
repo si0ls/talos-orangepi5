@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/kernel/build \
 
 WORKDIR /kernel/src
 RUN --mount=type=cache,target=/kernel/build \
-    make -j$(nproc) mrproper && \
+    make -j$(nproc) clean && \
     make -j$(nproc) olddefconfig && \
     make -j$(nproc) && \
     make -j$(nproc) modules && \
