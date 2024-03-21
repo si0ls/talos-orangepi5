@@ -76,9 +76,6 @@ target "installer" {
   context = "./installer"
   file = "./installer/Dockerfile"
   platform = "linux/arm64"
-  contexts = {
-    kernel = "target:kernel"
-  }
   tags = ["${REGISTRY}/${USERNAME}/talos-opi5-installer:${TAG}"]
   labels = {
     "kernel.version" = "${KERNEL_VERSION}"
@@ -97,9 +94,6 @@ target "imager" {
   file = "./imager/talos/Dockerfile"
   platform = "linux/arm64"
   target = "imager"
-  contexts = {
-    pkg-kernel = "target:kernel"
-  }
   tags = ["${REGISTRY}/${USERNAME}/talos-opi5-imager:${TALOS_VERSION}-${TAG}"]
   labels = {
     "kernel.version" = "${KERNEL_VERSION}"
