@@ -15,11 +15,11 @@ variable "U_BOOT_VERSION" {
 }
 
 variable "KERNEL_VERSION" {
-  default = "6.8.1"
+  default = "6.8"
 }
 
 variable "TALOS_KERNEL_VERSION" {
-  default = "6.8.1-talos"
+  default = "6.8.0-talos"
 }
 
 variable "TALOS_VERSION" {
