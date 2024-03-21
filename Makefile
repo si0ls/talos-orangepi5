@@ -36,4 +36,14 @@ build: imager
 		SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
 		$(BUILD) \
 		$(COMMON_ARGS) \
-		-f docker-bake.hcl
+		-f docker-bake.hcl \
+		system
+	@
+		TAG=$(TAG) \
+		USERNAME=$(USERNAME) \
+		REGISTRY=$(REGISTRY) \
+		SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
+		$(BUILD) \
+		$(COMMON_ARGS) \
+		-f docker-bake.hcl \
+		talos

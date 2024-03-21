@@ -30,8 +30,12 @@ variable "SOURCE_DATE_EPOCH" {
   default = "$SOURCE_DATE_EPOCH"
 }
 
-group "default" {
-  targets = ["u-boot", "kernel", "installer", "imager"]
+group "system" {
+  targets = ["u-boot", "kernel"]
+}
+
+group "talos" {
+  targets = ["installer", "imager"]
 }
 
 target "u-boot" {

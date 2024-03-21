@@ -61,9 +61,22 @@ jobs:
         with:
           platforms: linux/arm64
 
-      - name: Build and push
+      - name: Build and push U-Boot and Kernel
         uses: docker/bake-action@v4
         with:
+          targets: system
+          push: true
+          set: |
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
+            *.labels.org.opencontainers.image.created=${{ steps.meta.outputs.created }}
+            *.labels.org.opencontainers.image.version=${{ steps.meta.outputs.version }}
+            *.labels.org.opencontainers.image.source=${{ github.repositoryUrl }}
+
+      - name: Build and push Talos installer and imager
+        uses: docker/bake-action@v4
+        with:
+          targets: talos
           push: true
           set: |
             *.cache-from=type=gha
