@@ -1,5 +1,6 @@
 name: Build Talos for Orange Pi 5
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
