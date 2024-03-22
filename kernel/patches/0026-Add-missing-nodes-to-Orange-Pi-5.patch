@@ -1,44 +1,67 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Muhammed Efe Cetin <efectn@protonmail.com>
-Date: Thu, 16 Nov 2023 18:15:09 +0300
-Subject: arm64: dts: Add missing nodes to Orange Pi 5 Plus
+Date: Thu, 16 Nov 2023 18:09:07 +0300
+Subject: arm64: dts: Add missing nodes to Orange Pi 5
 
 ---
- arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts | 172 +++++++++-
- 1 file changed, 171 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts | 197 +++++++++-
+ 1 file changed, 196 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts b/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts
-index 3e660ff6cd5f..ee53ed120909 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts
-@@ -10,6 +10,7 @@
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+index 25de4362af38..42ce897faf0f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+@@ -6,6 +6,8 @@
+ #include <dt-bindings/leds/common.h>
  #include <dt-bindings/input/input.h>
  #include <dt-bindings/pinctrl/rockchip.h>
- #include <dt-bindings/usb/pd.h>
++#include <dt-bindings/usb/pd.h>
 +#include <dt-bindings/soc/rockchip,vop2.h>
- #include "rk3588.dtsi"
+ #include "rk3588s.dtsi"
  
  / {
-@@ -199,6 +200,18 @@ vcc5v0_sys: vcc5v0-sys-regulator {
- 		regulator-max-microvolt = <5000000>;
+@@ -47,6 +49,40 @@ led-1 {
+ 		};
  	};
  
-+	vbus5v0_typec: vbus5v0-typec-regulator {
-+		compatible = "regulator-fixed";
-+		enable-active-high;
-+		gpio = <&gpio4 RK_PB0 GPIO_ACTIVE_HIGH>;
-+		regulator-name = "vbus5v0_typec";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
++	analog-sound {
++		compatible = "simple-audio-card";
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&typec5v_pwren>;
-+		vin-supply = <&vcc5v0_sys>;
++		pinctrl-0 = <&hp_detect>;
++		simple-audio-card,name = "Orange Pi 5 Audio";
++		simple-audio-card,bitclock-master = <&masterdai>;
++		simple-audio-card,format = "i2s";
++		simple-audio-card,frame-master = <&masterdai>;
++		simple-audio-card,hp-det-gpio = <&gpio1 RK_PD5 GPIO_ACTIVE_LOW>;
++		simple-audio-card,mclk-fs = <256>;
++		simple-audio-card,pin-switches = "Headphones", "Speaker";
++		simple-audio-card,routing =
++			"Headphones", "LOUT1",
++			"Headphones", "ROUT1",
++			"LINPUT1", "Onboard Microphone",
++			"RINPUT1", "Onboard Microphone",
++			"LINPUT2", "Microphone Jack",
++			"RINPUT2", "Microphone Jack";
++		simple-audio-card,widgets =
++			"Microphone", "Microphone Jack",
++			"Microphone", "Onboard Microphone",
++			"Headphone", "Headphones",
++			"Speaker", "Speaker";
++
++		simple-audio-card,cpu {
++			sound-dai = <&i2s1_8ch>;
++		};
++
++		masterdai: simple-audio-card,codec {
++			sound-dai = <&es8388>;
++			system-clock-frequency = <12288000>;
++		};
 +	};
 +
- 	vcc5v0_usb20: vcc5v0-usb20-regulator {
+ 	vbus_typec: vbus-typec-regulator {
  		compatible = "regulator-fixed";
  		enable-active-high;
-@@ -226,34 +239,42 @@ &combphy2_psu {
+@@ -102,34 +138,42 @@ &combphy2_psu {
  
  &cpu_b0 {
  	cpu-supply = <&vdd_cpu_big0_s0>;
@@ -80,11 +103,22 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +	mem-supply = <&vdd_cpu_lit_mem_s0>;
  };
  
- &i2c0 {
-@@ -311,6 +332,53 @@ hym8563: rtc@51 {
- 		pinctrl-0 = <&hym8563_int>;
+ &gmac1 {
+@@ -223,6 +267,75 @@ hym8563: rtc@51 {
+ 		interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
  		wakeup-source;
  	};
++
++	es8388: audio-codec@10 {
++		compatible = "everest,es8388";
++		reg = <0x10>;
++		clocks = <&cru I2S1_8CH_MCLKOUT>;
++		assigned-clocks = <&cru I2S1_8CH_MCLKOUT>;
++		assigned-clock-rates = <12288000>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&i2s1m0_mclk>;
++		#sound-dai-cells = <0>;
++	};
 +
 +	usbc0: usb-typec@22 {
 +		compatible = "fcs,fusb302";
@@ -93,7 +127,7 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +		interrupts = <RK_PD3 IRQ_TYPE_LEVEL_LOW>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&usbc0_int>;
-+		vbus-supply = <&vbus5v0_typec>;
++		vbus-supply = <&vbus_typec>;
 +
 +		usb_con: connector {
 +			compatible = "usb-c-connector";
@@ -102,8 +136,8 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +			power-role = "dual";
 +			try-power-role = "source";
 +			op-sink-microwatt = <1000000>;
-+			sink-pdos = <PDO_FIXED(5000, 2000, PDO_FIXED_USB_COMM)>;
-+			source-pdos = <PDO_FIXED(5000, 1500, PDO_FIXED_USB_COMM)>;
++			sink-pdos = <PDO_FIXED(5000, 1000, PDO_FIXED_USB_COMM)>;
++			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
 +
 +			ports {
 +				#address-cells = <1>;
@@ -132,25 +166,34 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +			};
 +		};
 +	};
++};
++
++&i2s1_8ch {
++	rockchip,i2s-tx-route = <3 2 1 0>;
++	rockchip,i2s-rx-route = <1 3 2 0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2s1m0_sclk
++	             &i2s1m0_lrck
++	             &i2s1m0_sdi1
++	             &i2s1m0_sdo3>;
++	status = "okay";
  };
  
- &i2c7 {
-@@ -408,6 +476,14 @@ hp_detect: hp-detect {
- 	};
- 
- 	usb {
-+		typec5v_pwren: typec5v-pwren {
-+			rockchip,pins = <4 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+
-+		usbc0_int: usbc0-int {
-+			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_up>;
-+		};
-+
- 		vcc5v0_usb20_en: vcc5v0-usb20-en {
- 			rockchip,pins = <3 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
+ &mdio1 {
+@@ -263,6 +376,12 @@ typec5v_pwren: typec5v-pwren {
+ 			rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
  		};
-@@ -535,7 +611,7 @@ regulator-state-mem {
+ 	};
++
++	sound {
++		hp_detect: hp-detect {
++			rockchip,pins = <1 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
+ };
+ 
+ &saradc {
+@@ -364,7 +483,7 @@ regulator-state-mem {
  				};
  			};
  
@@ -159,7 +202,7 @@ index 3e660ff6cd5f..ee53ed120909 100644
  				regulator-name = "vdd_cpu_lit_s0";
  				regulator-always-on;
  				regulator-boot-on;
-@@ -802,6 +878,22 @@ &tsadc {
+@@ -625,6 +744,14 @@ &tsadc {
  	status = "okay";
  };
  
@@ -171,28 +214,19 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +	status = "okay";
 +};
 +
-+&u2phy1 {
-+	status = "okay";
-+};
-+
-+&u2phy1_otg {
-+	status = "okay";
-+};
-+
  &u2phy2 {
  	status = "okay";
  };
-@@ -830,6 +922,35 @@ &uart9 {
+@@ -650,10 +777,48 @@ &usb_host0_ehci {
  	status = "okay";
  };
  
 +&usbdp_phy0 {
 +	orientation-switch;
 +	mode-switch;
-+	sbu1-dc-gpios = <&gpio4 RK_PA6 GPIO_ACTIVE_HIGH>;
-+	sbu2-dc-gpios = <&gpio4 RK_PA7 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
 +	svid = <0xff01>;
++	sbu1-dc-gpios = <&gpio4 RK_PA5 GPIO_ACTIVE_HIGH>;
++	sbu2-dc-gpios = <&gpio4 RK_PA7 GPIO_ACTIVE_HIGH>;
 +
 +	port {
 +		#address-cells = <1>;
@@ -210,26 +244,19 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +	};
 +};
 +
-+&usbdp_phy1 {
-+	rockchip,dp-lane-mux = <2 3>;
-+	status = "okay";
-+};
-+
- &usb_host0_ehci {
- 	status = "okay";
- };
-@@ -838,6 +959,20 @@ &usb_host0_ohci {
+ &usb_host0_ohci {
  	status = "okay";
  };
  
 +&usb_host0_xhci {
-+	dr_mode = "otg";
 +	usb-role-switch;
++	dr_mode = "otg";
 +	status = "okay";
 +
 +	port {
 +		#address-cells = <1>;
 +		#size-cells = <0>;
++
 +		usb_host0_xhci_drd_sw: endpoint {
 +			remote-endpoint = <&usbc0_hs>;
 +		};
@@ -239,15 +266,10 @@ index 3e660ff6cd5f..ee53ed120909 100644
  &usb_host1_ehci {
  	status = "okay";
  };
-@@ -845,3 +980,38 @@ &usb_host1_ehci {
- &usb_host1_ohci {
+@@ -665,3 +830,33 @@ &usb_host1_ohci {
+ &usb_host2_xhci {
  	status = "okay";
  };
-+
-+&usb_host1_xhci {
-+	dr_mode = "host";
-+	status = "okay";
-+};
 +
 +&hdmi0 {
 +	status = "okay";
@@ -280,3 +302,4 @@ index 3e660ff6cd5f..ee53ed120909 100644
 +};
 -- 
 Armbian
+

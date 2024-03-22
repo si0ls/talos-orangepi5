@@ -1,102 +1,7 @@
-From patchwork Fri Feb 16 17:01:16 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560338
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C62BC48260
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=HPcjgcGnlgamLmaJ2nXpM+CxMvJyNoFpt2/v9OTSf70=; b=pamK9z3KeDLNla
-	fzH8Z0M36sx5mRtcVgJJjUzz0lrFla9qWH+K/yNBeBjo/cikxax0khiV8J3Y3YN8sGFvpxqtBN7Dc
-	lI8WPrXAWR++c0U+kI2phSzgAViYWDnCuOZznrVd+NBjBuIBNIzJxuzY5XwA8EIdhA6EQ1BafW3HC
-	Wf1xg1s1Wcei2h/NZpVggHGGgLWk0n7RiYi4Bd0ab+vNFjmaZjvJYuki2FCs26fTymCVnb74l5CsS
-	87wiQV7DW6rmP2aUMT2OnZ0qLUxUO3YSiUMMazMIaWDbamP/nvOmTpWldA9zQzNfqF1ZDI+SwpvVf
-	eY3XIdytlEXkrH1rfMFQ==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eV-000000036fz-1p6q;
-	Fri, 16 Feb 2024 17:05:31 +0000
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eK-000000036Vv-3gxv;
-	Fri, 16 Feb 2024 17:05:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103117;
-	bh=+QN3wDaP88zwhEsmG1eAumWr78ePlqFlD4QYYDrJfgI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9ZW1yQqTgIBhaL6p6GcgHo8GbKoBnEhcevwIpmf0QOy9wodqaZaGmtjSXNSfIXqh
-	 IxviuI6SV7PgugOFpcwcl1APn4F5f9SgXW6EycNVlma8L4GUipbISQGNtuS7I9jKUK
-	 B+Z+oofSOxB3erQpBBXj7IpCSlCy5jarCE+11/ONJdRYwJUhNhdr9ojo5sXhe2eqn7
-	 rrD0+NgNH0kwXcI64wWs+y3s/3g+BmjZEaQTFZ0aqkLgbKAtpT9VnVxsnxR44ihvel
-	 CyZaTxzSc2HbIT6f6kmNGE78nK/wzggjPpF62P+RTp7ZHSVaYaellGXwtWI8sQou5p
-	 f+YZv0eL/8hBg==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest
- SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 43E323782084;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id D10554800CA; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v3 01/10] dt-bindings: phy: add rockchip usbdp combo phy
- document
 Date: Fri, 16 Feb 2024 18:01:16 +0100
-Message-ID: <20240216170514.75200-2-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090521_091174_BA134DCD 
-X-CRM114-Status: GOOD (  14.17  )
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: dt-bindings: phy: add rockchip usbdp combo phy document
 
 Add device tree binding document for Rockchip USBDP Combo PHY
 with Samsung IP block.
@@ -105,11 +10,9 @@ Co-developed-by: Frank Wang <frank.wang@rock-chips.com>
 Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
 ---
- .../bindings/phy/phy-rockchip-usbdp.yaml      | 148 ++++++++++++++++++
+ Documentation/devicetree/bindings/phy/phy-rockchip-usbdp.yaml | 148 ++++++++++
  1 file changed, 148 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/phy/phy-rockchip-usbdp.yaml
 
 diff --git a/Documentation/devicetree/bindings/phy/phy-rockchip-usbdp.yaml b/Documentation/devicetree/bindings/phy/phy-rockchip-usbdp.yaml
 new file mode 100644
@@ -265,105 +168,13 @@ index 000000000000..1f1f8863b80d
 +      rockchip,usbdpphy-grf = <&usbdpphy0_grf>;
 +      rockchip,vo-grf = <&vo0_grf>;
 +    };
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:17 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560345
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D180C48260
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=VnAV0DvU3qTOO+g7IwMp3YI4PEUiZB2eyn7RA7M3GrQ=; b=0x95sAd55a7x4i
-	6AACVFstldoHR1ZjcKBN+ZP1nWqk+s0Lpf1jjkrvylASU82Zo3M/W8hu5ihKVjluR66LxvmyWd2Ub
-	ihSQk6f+QTIo+74f9YG0Q85T19ObVs9MdzKBp1aAIdr+6mK24dkdYt3470VE2fWttjytSqFO6BmnC
-	1Ys1VhgLk6Tx7SSlkrQis5rV5yOBSarlkQ3KRg8GuT3ytgpzLNT7GAiX2Bv450pdLXZit45r2mD2r
-	MWkzeaCDQk9jtS3ZPgJTUxsZuCkZklEcFMaqKQ9CLnxZg6AyJDaY6B30ezEodFHsVA6/hrbFJz2TY
-	uAjUWEc5q/X9LJEL/qjA==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1ep-000000036xL-38Bz;
-	Fri, 16 Feb 2024 17:05:51 +0000
-Received: from madrid.collaboradmins.com ([46.235.227.194])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eK-000000036W4-3SmI;
-	Fri, 16 Feb 2024 17:05:29 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103117;
-	bh=ftDbb98NpanhJl0zS+Pl2doINnj7eszjR1q8Y6mhlcA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlFDxaaDTb4qPlM0g4bLi7lltJpUXMHvfpSCi3hnmoGdIr6NGVNQuJstDiPnTIqhh
-	 GN073FYHt8oAz+ASpFEqY9223nmk1n8KCmp/958jd/GCNzI89eCfeONaZmoNUvYsek
-	 M7uPnBipP411et3s7yW04X2v78B/1YYZCpNhOMbH6Y4IM6G9pTVHTnUyt+LzU45TvY
-	 Une/ldeD1lrZ4Up6LR7Vd2vB0FGw2vpb892nmAtkXPVC8Uc6Nip8VI8l5Y0OUOEltH
-	 H24s1yF4gRddztS+KDDIKeuA9PLS/kxgq9Djfz0LqM8JJhRLaxP31/0+UyLoKU2yhK
-	 FS9YzHAjVYn/g==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest
- SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 5169337820AD;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id D39214800CE; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com,
-	Zhang Yubing <yubing.zhang@rock-chips.com>
-Subject: [PATCH v3 02/10] phy: rockchip: add usbdp combo phy driver
 Date: Fri, 16 Feb 2024 18:01:17 +0100
-Message-ID: <20240216170514.75200-3-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090521_312537_A220170E 
-X-CRM114-Status: GOOD (  24.12  )
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: phy: rockchip: add usbdp combo phy driver
 
 This adds a new USBDP combo PHY with Samsung IP block driver.
 
@@ -385,13 +196,11 @@ Signed-off-by: Zhang Yubing <yubing.zhang@rock-chips.com>
 Co-developed-by: Frank Wang <frank.wang@rock-chips.com>
 Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
 ---
  drivers/phy/rockchip/Kconfig              |   12 +
  drivers/phy/rockchip/Makefile             |    1 +
- drivers/phy/rockchip/phy-rockchip-usbdp.c | 1612 +++++++++++++++++++++
+ drivers/phy/rockchip/phy-rockchip-usbdp.c | 1612 ++++++++++
  3 files changed, 1625 insertions(+)
- create mode 100644 drivers/phy/rockchip/phy-rockchip-usbdp.c
 
 diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
 index 94360fc96a6f..d21b458c1d18 100644
@@ -2040,105 +1849,13 @@ index 000000000000..1f3b7955c9f3
 +MODULE_AUTHOR("Zhang Yubing <yubing.zhang@rock-chips.com>");
 +MODULE_DESCRIPTION("Rockchip USBDP Combo PHY driver");
 +MODULE_LICENSE("GPL");
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:18 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560337
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADEEDC48BC4
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=h64d9m+ltJFfoMVOUMGeJyYTERkSrCm4W5W9ZKwF6Ac=; b=WGIcHfEIogiUff
-	BUawfzE8pcb6YEq5IiDgohIAH4e6a6Gv3SrewfAPN5jpT1XOTzwC79i53H8drT26owa0Yt/otwu6g
-	vxkqXu6v3IgQ7G19Dbs5LFH7C4bH85Jb1Odr/4674Dhb4u5/yKCV63UO51jNbWlyGcOACmBLZPXyZ
-	F5CDBeOArhN6f7JvMYE0bYjOF2RZd9fAZ31Rg+6RI9tFfuF7TMi6N9TDqpNsfRWBYAXK06PEzrMMo
-	Z5lo0efhEIdIRfY1Syrwcd4Azte0LVfIbRcy80zX07IopyO7maMLIC8PvV9Swn8/nbunNLxAR0UTB
-	/XgPToAJ9p71xSaDfHAw==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eQ-000000036cI-0h54;
-	Fri, 16 Feb 2024 17:05:26 +0000
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eK-000000036W0-3Vlq;
-	Fri, 16 Feb 2024 17:05:22 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103117;
-	bh=6OwzIeJWiBUu4hW9YyYAqgUG6qN2do9w9jwQ6wXw8TA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aw8cemXJhlCRPIwDQK+IIYT9xoZcl9k62wOb8SPteauqf23S4uh7JKpiW9nqVrUbG
-	 UCl9IWYdRMQjsraAgTul3/JhCF2xqBl2zwZeKyiERcn5+NEp+W4CHSdKoqkTJKGNo+
-	 u05EOx37bPWKd64yImB7DQfPBBUK0gT1OM5B/Tcy+F7GDsybfKNkuS4664AeWYLteY
-	 QDiaujv61hBCoMq/14oqRjOna9NZUsUZkvV/c9u4PmpE9vc79xqaLdP6GgivDnmKfZ
-	 IHlCv0k9g30YvlRPTefvPqc4g1Sis+KcuP31aI6Xn0wGw4YKBspvuSW6K4i2/t07jp
-	 s9maM07oBs0PA==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest
- SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 57CBF37820B6;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id D55C24800CF; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 03/10] arm64: defconfig: enable Rockchip Samsung USBDP PHY
 Date: Fri, 16 Feb 2024 18:01:18 +0100
-Message-ID: <20240216170514.75200-4-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090521_071802_ACBDA9BE 
-X-CRM114-Status: UNSURE (   9.81  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: defconfig: enable Rockchip Samsung USBDP PHY
 
 The USBDP Phy is used by RK3588 to handle the Dual-Role USB3
 controllers. The Phy also supports Displayport Alt-Mode, but
@@ -2161,104 +1878,13 @@ index e6cf3e5d63c3..07890b86777e 100644
  CONFIG_PHY_SAMSUNG_UFS=y
  CONFIG_PHY_UNIPHIER_USB2=y
  CONFIG_PHY_UNIPHIER_USB3=y
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:19 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560336
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40F99C48BF6
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Qk4WmpvoCrO/9zdoJCc4Af7xYBFyVdgPy7cOfOb0i7g=; b=hr87pYZsLPoJ6b
-	9SmdtmwEhwV7rHYH1mGg8Zrxpz2OuSUR7a617tjHPIFBZxqcwDXaqnp8X0uLRITg2cGOsCbS8sOdB
-	RLPNbS+bu/tZU/E1yM/YYUMj1kCcv+uudZJlzVr67Y2wY+xEHLOn9iucvEHizFq/aKX04qoqCJTqW
-	ii0g5qsSjZl4LqMeEhJTC6rGGmmvjIVYIujuV2NiTY33EJQiyN4pdlvWHcaKf5ha3PvmxlEKFmu8R
-	kVFM3Umm23BJJCfe3pShtJx/8nXQHgizVXjQYbHcEyQVVysFmGp8rELWI8U8V+Yb8uPh/4I8UX4iq
-	DOtRVuxxcmRW7tzI4cUw==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eU-000000036fC-12iJ;
-	Fri, 16 Feb 2024 17:05:30 +0000
-Received: from madrid.collaboradmins.com ([46.235.227.194])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eK-000000036W2-3z6d;
-	Fri, 16 Feb 2024 17:05:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103117;
-	bh=N8XGqG6EO77dbuaFhDjXtSm+LE8VQGaOvq4GwvbAt0U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=5djO+gs3MhhDRXxctlKKQB0f2cE7ixtZaRGR2jFfYYzMzjz56utdMtKVAQ9E5/BLP
-	 ppNTPkWPKbgIrKBBn4NPp6TcgfTztcMAwd1rElJgMzqVUJHmy8gyWfn26u4W98F6If
-	 O+17+78Lxa3ciYsjquDfi8NeA1PSnWBh2RiqWwEAvJT509s6FU73uNMAXRCEMUQve5
-	 xcnAFNAVYHvgcG5H85OPBkPKeJLfA+flwYLXJPYUcWy20R6KHSjU13exfrp61npVs/
-	 pHjWDuOIlwPO0wwWKDDrBhsKe11goRAfiwMRSA36PdTrV6l/T/9vHZXNEE1liXKpnp
-	 how1JA30JlVZg==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 60D4237820BC;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id D71B14800D0; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 04/10] arm64: dts: rockchip: fix usb2phy nodename for
- rk3588
 Date: Fri, 16 Feb 2024 18:01:19 +0100
-Message-ID: <20240216170514.75200-5-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090521_181625_3E8638EC 
-X-CRM114-Status: GOOD (  11.26  )
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: fix usb2phy nodename for rk3588
 
 usb2-phy should be named usb2phy according to the DT binding,
 so let's fix it up accordingly.
@@ -2290,112 +1916,20 @@ index 36b1b7acfe6a..38e075b7b661 100644
  			compatible = "rockchip,rk3588-usb2phy";
  			reg = <0xc000 0x10>;
  			interrupts = <GIC_SPI 392 IRQ_TYPE_LEVEL_HIGH 0>;
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:20 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560340
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90F4AC48BF6
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=QLRhgCkWgAxHGkFI2j2F+W+UEbYjDoweRtOz0kG1T8o=; b=eNAdA7xkby45IN
-	Po79VXyJOd1SM2ccjyPQ9SNGuvlLS+L8N/xNoGYUYRwgdZq/38QlJFcvbIrB83kVF/H6XSeSKgX0c
-	XfP1Uyqr9RfbW2LibQnmnBVmyvcHEpaoXBwaQeXGyCP75zCgN6PalsWNOS3Gz25klZSl3NxDHeYLD
-	Z0jV8JlMr/DfKnEhnwep53pMpfKLdGpRv3heVrwoGeH+VxiSoyllbYY4tBVjIYW1Y0qXnnvW7aiz0
-	ckH9Wxw6ZwgsHF2tbhsZLkPFSiMuWC9X3qDbCsdf8/+ePdCYTs4FSsv1eJxWOyzw+TTelYbA5T4qJ
-	1DuMXaKCNPc8Rqp6BEOQ==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1ea-000000036ky-40zD;
-	Fri, 16 Feb 2024 17:05:36 +0000
-Received: from madrid.collaboradmins.com ([46.235.227.194])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eN-000000036YZ-3rlg;
-	Fri, 16 Feb 2024 17:05:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103117;
-	bh=6zOLQPXZQ2JGX+nNdATNogWmxrlrJE9gXcKsVLFpIy8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gehxll/wSV8g4gjc91Mu+SvyPw/bwR/kHkIdmzQSPJkesRQ7wq/mrBrSTphV2mwEs
-	 AQ9caNixCQ9yWYTk3Gzdy+0FSU/mTwr8NzGaPej5D31Fk0jlZA8ekvPp3dxZ/yMA15
-	 7+mj2kgx8vl2RR3DRuCnrlTMzwi1JxehB7BA94wbPY3N0KJ0MAKE9EUmQ3NYqmaFgc
-	 3HTrhD/T9GEdPSeO7V9S/a68+x4Vk7CkOel4JO8cnbx2LzV78QvCM9om0T/9egVnOE
-	 uVki/rYGyAP/L/So/Q+LfUGFDThk7TQQ2UKKuTwwcQVS8IeyFLdDfDt/fg9QvZ4SUc
-	 7cOz5PfYyziUQ==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C0FC637820BD;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id D8F784800D1; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 05/10] arm64: dts: rockchip: reorder usb2phy properties for
- rk3588
 Date: Fri, 16 Feb 2024 18:01:20 +0100
-Message-ID: <20240216170514.75200-6-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090524_513311_490B845B 
-X-CRM114-Status: UNSURE (   9.93  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: reorder usb2phy properties for rk3588
 
 Reorder common DT properties alphabetically for usb2phy, according
 to latest DT style rules.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 16 ++++++++--------
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 16 +++++-----
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588s.dtsi b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
@@ -2438,111 +1972,20 @@ index 38e075b7b661..8708436dd545 100644
  			status = "disabled";
  
  			u2phy3_host: host-port {
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:21 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560341
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B8EC48BEF
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=p2f6HD8k8qavlgXKcTSCFxEUsLpLMifTbIEnHAOmVa8=; b=igh78AoI0HTPY6
-	qk0Tqna3HKg8msEa0ZK1l6om0BIYFY0JvHg+BuxDShkFilmrO28foSsE1KOdl6pLqBbKfciKzTZOJ
-	54JEWU6My1OvtVvWCThv/9xIqfwSck35rw9W42JpZZtlm9Un68NYnzpH05bvxc+wWz3wZaPYpj/IW
-	I2JIakPvGKpuC7IyCHNpDHiGWpm5rPQ64rvsblQZMEpqiBaofHzt0m+N/zAbexQB+ufJ4oggcgvS2
-	BT0TcIS+DfgpWQR6K6DFjLbkKVCUX1CQJeadWCN32CjII4OBiryfc45AYiMyQHdZvDL7/baEbO/hh
-	ZZ97n/LiVsOmsrp25XaQ==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1ea-000000036k7-0PBo;
-	Fri, 16 Feb 2024 17:05:36 +0000
-Received: from madrid.collaboradmins.com ([46.235.227.194])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eN-000000036Ya-3oz7;
-	Fri, 16 Feb 2024 17:05:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103117;
-	bh=bTdmi2NN2sNi6fGsH9hqezBevjFtnid1nqOeKMCQ0Ms=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgwPKKw8kwGgpuAvAbDJXMDEy+PzwGfuQbjHnOlUQ9nLRNSEVbLyIN+i9q3MU3w9W
-	 na+v2fjRuy6VI8tlbwjFUNDX6mbYpUm+UwVw34rxTll0dShSKgfKYV3WhOVrmBX63N
-	 uNlO1C55x7/V7qrkcj05YqTTmmV6vXdS1Cxs22j72wtN1OBHjLu9jflb5VagYJg0i5
-	 U9J0AKQbenXFW0n2iDWlrH7nAV4DrHFi8nBsICXMdlnBq0yQWyexm69RfrkZXroI0T
-	 Y7SaUpqiIPK4cYVH8Ckjrf1fM0oMn6nM6wpi5u4pmeMsBUFc/Ben4VokxQfR//VPbZ
-	 DeBVU7q0b0vrg==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C4B6C37820BE;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id DAC3E4800D2; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 06/10] arm64: dts: rockchip: add USBDP phys on rk3588
 Date: Fri, 16 Feb 2024 18:01:21 +0100
-Message-ID: <20240216170514.75200-7-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090524_479083_91614ECB 
-X-CRM114-Status: UNSURE (   9.74  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: add USBDP phys on rk3588
 
 Add both USB3-DisplayPort PHYs to RK3588 SoC DT.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3588.dtsi  | 52 +++++++++++++++++++
- arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 63 +++++++++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3588.dtsi  | 52 ++++++++
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 63 ++++++++++
  2 files changed, 115 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588.dtsi b/arch/arm64/boot/dts/rockchip/rk3588.dtsi
@@ -2708,112 +2151,20 @@ index 8708436dd545..069aef13fcd4 100644
  	combphy0_ps: phy@fee00000 {
  		compatible = "rockchip,rk3588-naneng-combphy";
  		reg = <0x0 0xfee00000 0x0 0x100>;
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:22 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560339
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4671C48BC4
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=QP6geiTvwoccmeOpuktnOzG42JjM4J3xc8+26CELc1E=; b=R0k3j2Q4EoLgYn
-	wxVPDMmhI/QTOrz8AWJ7Eak9BJFh9uNS8jAOX8k2KOGhmY7fh+4X4nUdlhn9ApYfSVxvNeiRqSsJj
-	pTuvsC9D0YToWBJK0N9MaOvmJ9hSt4b1zTNo9TVHnHvVVoJMLrxcGD8IGrqSYmOVn/aN577zN5OY0
-	iLUKjWW5NyJmcbvE2nCLLhkpN1YX8dRDFAHs2YeMoFVbnWmxEp642fFgaovmGUg4ylYAKyn9AG5SQ
-	xdUq4aHDA19anrJywEfIUXOBgk96IbAXCTWwWg1X7O8FkMJR9Z95uF+G6Dtuv+XuEwHAcXfGkQREn
-	12Bm++DUChONtBcku9Eg==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eZ-000000036jR-0t5d;
-	Fri, 16 Feb 2024 17:05:35 +0000
-Received: from madrid.collaboradmins.com ([46.235.227.194])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eO-000000036Yj-10sd;
-	Fri, 16 Feb 2024 17:05:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103118;
-	bh=OS2vKMsUIlcbQuxqq/makteFqomE77cMtM66qk8+7Yk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIiKxxwIVcbYdlOvSoCUXCWSPApBfWXguzg/PH7EtjEpRoDmUD5iA0asKbxH36r+V
-	 BMw+iBOjxxR4uM1acIPpROSciDE3Ur5CCLG8eMPZcUA7CiWrHb8sl9yP0OcUjJzKNP
-	 /iGPCRiJ+QM5rrwUQa8GxGxsBh1mabBBAnFNdSJz3aq99IwxppN8H8Q0v3hXvsTr67
-	 elio1WRKae48OTfClKqLcEO0xacMbRjkNIChCvsBpVwc/XRY3oz1mmoXNu5OlVfzXE
-	 Px4sAon4ZVCcsfu1ivr10BXc9hwWhMD5UQ1F52VZxPq41BJL+YTf3H4XM4yETn0xbp
-	 vyFQRiXsCCwgw==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D88D137820BF;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id DCAFE4800D3; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 07/10] arm64: dts: rockchip: add USB3 DRD controllers on
- rk3588
 Date: Fri, 16 Feb 2024 18:01:22 +0100
-Message-ID: <20240216170514.75200-8-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090524_769461_001D0428 
-X-CRM114-Status: UNSURE (   9.92  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: add USB3 DRD controllers on rk3588
 
 Add both USB3 dual-role controllers to the RK3588 devicetree.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3588.dtsi  | 20 ++++++++++++++++++++
- arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 22 ++++++++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3588.dtsi  | 20 +++++++++
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 22 ++++++++++
  2 files changed, 42 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588.dtsi b/arch/arm64/boot/dts/rockchip/rk3588.dtsi
@@ -2880,114 +2231,24 @@ index 069aef13fcd4..7ac68ffc3f67 100644
  	usb_host0_ehci: usb@fc800000 {
  		compatible = "rockchip,rk3588-ehci", "generic-ehci";
  		reg = <0x0 0xfc800000 0x0 0x40000>;
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:23 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560342
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91634C48BC4
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=pXRlST2zkB4kr8I7JHlZ1fgCu/fIDNiKtlWSg0UwjJU=; b=n2RpbuuaNrFlk6
-	42F/UF0lYhmadvN3+MTTrGb2TvuMnY1ijkWhe/pbMCt8OijMiluGdGOv/PQ9CKdVihiOPmXqsad3V
-	CKF0JwJ9FlpVmA+DgkzmmjAjAOB2p03K8P7ydYfsdGgr+vabavYIxoyuq6Wn+Et/Q8uFIaDQfLzwe
-	kxIgPvJv5cHb834mBRgBjXANHLLcHsSmcrPF2Ftsgh3776UHoBxnbgW9c9FFKihTYzSBBCTd4Kcp0
-	h+1bXcjwGz2TI5oWcYT/2SRXWFq1Wyog5lB+jsoBjbGDJiPDtlHLWQIxN/uYdpRQbOUM7D8O4SEmU
-	MK8mGzOO/bbrhiADGoTg==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eg-000000036po-0n4x;
-	Fri, 16 Feb 2024 17:05:42 +0000
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eO-000000036Yk-13oh;
-	Fri, 16 Feb 2024 17:05:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103118;
-	bh=0acUJ6uhxWQwJKn7gi4S72wsDmO2zKXXbszxoTmv7G4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSl+Rs8UwtZbetXwLzKoBc/NSLFQ5FvZKOHQ7rKmRn2MUUJ4A3CPsAciDhnEw4j0o
-	 brJS6ny3EwVfgOgSwcW5goVxQ4Chz91HMZQWWxeDj8R+ntuLj8c52hIRZRq45ky/wb
-	 ASsvCCTNlwdn9xxvMKKM/iJ2Nntz9Pogw4RSNHxRg4v+ghohvtEksBIHcxLqe+lrqz
-	 axJla6A47c9FMusCkrhWrrI2G7oQA+GO6EMB/bJH91nYYxQXSgvhDZE6p5cEiXs7dw
-	 tWWXEVZGX/GNLNPgXU9zuJpgCqTFT08P7YaqxFtNhQgySQCB52H5bcarREFsVxkWcQ
-	 b7IIj68+sYOSg==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id DEECE37820C0;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id DE6484800D4; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 08/10] arm64: dts: rockchip: add USB3 to rk3588-evb1
 Date: Fri, 16 Feb 2024 18:01:23 +0100
-Message-ID: <20240216170514.75200-9-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090524_753168_4C535E34 
-X-CRM114-Status: GOOD (  13.37  )
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: add USB3 to rk3588-evb1
 
 Add support for the board's USB3 connectors. It has 1x USB Type-A
 and 1x USB Type-C.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- .../boot/dts/rockchip/rk3588-evb1-v10.dts     | 143 ++++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts | 143 ++++++++++
  1 file changed, 143 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts
-index ac7c677b0fb9..0e82dbb4c5ff 100644
+index de30c2632b8e..c3746d3a9b1d 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts
 @@ -9,6 +9,7 @@
@@ -3091,7 +2352,7 @@ index ac7c677b0fb9..0e82dbb4c5ff 100644
  };
  
  &pwm2 {
-@@ -1040,6 +1113,22 @@ &sata0 {
+@@ -1041,6 +1114,22 @@ &sata0 {
  	status = "okay";
  };
  
@@ -3114,7 +2375,7 @@ index ac7c677b0fb9..0e82dbb4c5ff 100644
  &u2phy2 {
  	status = "okay";
  };
-@@ -1078,3 +1167,57 @@ &usb_host1_ehci {
+@@ -1079,3 +1168,57 @@ &usb_host1_ehci {
  &usb_host1_ohci {
  	status = "okay";
  };
@@ -3172,111 +2433,67 @@ index ac7c677b0fb9..0e82dbb4c5ff 100644
 +	dr_mode = "host";
 +	status = "okay";
 +};
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:24 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560344
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F9D8C48BC4
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=g1EYA2Y5ucUO3JnzObKBCCQKAP0FradjTA7mpvuvuBo=; b=pa9Ji5K/Wadi42
-	toH8b2eyMaxIzApq2xGJxilswu7DsTdhIQEn9NXeQ4SFnqhmufCqC1ZiC5Wa032RRNcyt8vl3zGHb
-	+PK34jmvSE2Xo3fQjVCb4SqBxfPl88AtEW5hjYZTKj5uLIKxoYAVH7+N6aSUXsLFyzmLwulrxoRp9
-	hvan2Gg9Lx6N2Q2C0OF1SANQvaLcg1CO0Vf6j1DToQ+z7a/Jqw1KqZ9dHQI9D77Jzu3exfjBCs3K0
-	PHZD39hXOTXaBIlfEPw7GDuWtLJ/0gMNFjnTZTsy4ZyIf8l1pjeDHVLmPK4bbTthxXJXlvPjCMGgR
-	KwiCFvmycQjIiUE+hdhw==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eh-000000036qc-18Le;
-	Fri, 16 Feb 2024 17:05:43 +0000
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eO-000000036Yu-2KTh;
-	Fri, 16 Feb 2024 17:05:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103118;
-	bh=WAwF9+4NxVFIAxAbMjIC26UpfeO4GAskAOtMN4AnYh8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7k2Cie/vvju8NAWz8fKFRuJ1p+QmjDGqWNi1S72mOPSYVUdVU4eLsCStQGNy5IkW
-	 6oTNaC7cYRGyAmbq1Vjp4BAwqedg1VpkN4lywILUvfrdJfmVvzE4t81bynI9itSxAD
-	 J6IFMHtHO+tiNHReD7EIP5Gp3zm5sJLr+QB+3JCT46Oiw21QoV+vcJFoCNgVhTtKPg
-	 onkylhCRLxoyh6VIqVEGYC/i53zHsBeEhs5kYx792ty8ghvYBs4c+Ug9oI3mP1cfcx
-	 m82utQDwXQWMLpEkuqfZCcTR5wt/KhiCCBTQN/8tJZWy8+xhxkQp3/NSwweXagrx9S
-	 dNDv+15Lc2ZYQ==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id EFCD337820C2;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id E02C44800D5; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 09/10] arm64: dts: rockchip: add upper USB3 port to rock-5a
+Date: Fri, 28 Jul 2023 16:43:16 +0200
+Subject: usb: typec: tcpm: avoid graph warning
+
+When using a devicetree as described in commit d56de8c9a17d ("usb:
+typec: tcpm: try to get role switch from tcpc fwnode"), the kernel
+will print an error when probing the TCPM driver, which looks
+similar to this:
+
+OF: graph: no port node found in /i2c@feac0000/usb-typec@22
+
+This is a false positive, since the code first tries to find a ports
+node for the device and only then checks the fwnode. Fix this by
+swapping the order.
+
+Note, that this will now generate a error message for devicetrees with
+a role-switch ports node directly in the TCPM node instead of in the
+connectors sub-node, before falling back to the legacy behaviour. These
+devicetrees generate warnings when being checked against the bindings,
+and should be fixed.
+
+Fixes: d56de8c9a17d ("usb: typec: tcpm: try to get role switch from tcpc fwnode")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 66e532edcece..31933278df77 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -6828,9 +6828,9 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
+ 
+ 	port->partner_desc.identity = &port->partner_ident;
+ 
+-	port->role_sw = usb_role_switch_get(port->dev);
++	port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
+ 	if (!port->role_sw)
+-		port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
++		port->role_sw = usb_role_switch_get(port->dev);
+ 	if (IS_ERR(port->role_sw)) {
+ 		err = PTR_ERR(port->role_sw);
+ 		goto out_destroy_wq;
+-- 
+Armbian
+
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 Date: Fri, 16 Feb 2024 18:01:24 +0100
-Message-ID: <20240216170514.75200-10-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090525_035469_F74AAC77 
-X-CRM114-Status: UNSURE (   9.45  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: add upper USB3 port to rock-5a
 
 Enable full support (XHCI, EHCI, OHCI) for the upper USB3 port from
 Radxa Rock 5 Model A. The lower one is already supported.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- .../boot/dts/rockchip/rk3588s-rock-5a.dts      | 18 ++++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 18 ++++++++++
  1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
@@ -3322,111 +2539,20 @@ index 2002fd0221fa..149058352f4e 100644
  &usb_host1_ehci {
  	status = "okay";
  };
+-- 
+Armbian
 
-From patchwork Fri Feb 16 17:01:25 2024
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Patchwork-Submitter: Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Patchwork-Id: 13560343
-Return-Path: 
- <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BFA2C48BEF
-	for <linux-rockchip@archiver.kernel.org>;
- Fri, 16 Feb 2024 17:05:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=6HW7F9zr6dDRW7y9eHgozuvaO9EVC83/sZ0TkuGXwU8=; b=3uRTWWJDcagEi1
-	BkGwRS+P2/XKk2PEN5THVRiIcreU6CJ50DrNpQ8Y8PO7pzYEN43rLhgbBeewKk9K6AptvhL7wlnqg
-	zp7ScPlJXiWAhsj40xblH0qNDGqWqOeyJkEf+ToPSN11qUWlN5z+OfC854460kh1NKqHvIcHSLipr
-	tr7z5cIRjh3tYkLDnVrmo7MSVHSAtm8RNavPVDYDYOrMdR8CmnXcCjWlb8LKtZ/umfBHCTrKizWFG
-	VqLYRkmWc7eVEncfQ5ZB7AF76DU1cnGLQQ6Bk8lBRDKcvJtbFcFlSu2TcWKvuCY8Ah0pmgglKX/is
-	uK76pt/nMk3zZI7D+aNQ==;
-Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1ei-000000036rT-1dr2;
-	Fri, 16 Feb 2024 17:05:44 +0000
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rb1eO-000000036Yy-2GJS;
-	Fri, 16 Feb 2024 17:05:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708103118;
-	bh=x0cgeWgRq1pe/oohivryYMlY5YOEjfyvfHcbCiW1XMI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVOfGmgfraL06iJ+8UCpf8xLwh84VngZqeSPAIoqmAntiiDpEVFPM+79fu0z8/+T4
-	 FBA1T0eqqbwFPgcyrw3V1kOhILcR4MoyokWnPiGWDVfrVSq7i3tfEreU548+SUw8iz
-	 RJnbhwKR+W9TBNDoDApI/QlTg7MZbpyfKNW8Hqp0tOoqW5Eg/253DErKJEzwSsc+Hu
-	 dOY9/ztofv+SyIGg7YoFyWTr3aNh+BOnHm9MersuNXtqmt3YSImSduqDw9WagGyhrB
-	 HijpFQFVaawLAxrrSVIo4LmHa+XEtOc9HnW9gQrii7lWaaY7UI1KeaMndA3kFZI5WW
-	 /BzB+9B2K9MZw==
-Received: from jupiter.universe (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id EF38C37820C1;
-	Fri, 16 Feb 2024 17:05:17 +0000 (UTC)
-Received: by jupiter.universe (Postfix, from userid 1000)
-	id E1F0B4800D6; Fri, 16 Feb 2024 18:05:16 +0100 (CET)
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	kernel@collabora.com
-Subject: [PATCH v3 10/10] arm64: dts: rockchip: add lower USB3 port to rock-5b
 Date: Fri, 16 Feb 2024 18:01:25 +0100
-Message-ID: <20240216170514.75200-11-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-References: <20240216170514.75200-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_090524_995214_66EF00CF 
-X-CRM114-Status: UNSURE (   9.10  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: linux-rockchip@lists.infradead.org
-X-Mailman-Version: 2.1.34
-Precedence: list
-List-Id: Upstream kernel work for Rockchip platforms
- <linux-rockchip.lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip@lists.infradead.org>
-List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
-Errors-To: 
- linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+Subject: arm64: dts: rockchip: add lower USB3 port to rock-5b
 
 Enable full support (XHCI, EHCI, OHCI) for the lower USB3 port from
 Radxa Rock 5 Model B. The upper one is already supported.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts | 17 +++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts | 17 ++++++++++
  1 file changed, 17 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
@@ -3471,3 +2597,6 @@ index a0e303c3a1dc..149bd44ffd1c 100644
  &usb_host2_xhci {
  	status = "okay";
  };
+-- 
+Armbian
+
