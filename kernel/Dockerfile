@@ -61,7 +61,8 @@ RUN --mount=type=cache,target=/kernel/build \
     make -j$(nproc) olddefconfig && \
     make -j$(nproc) && \
     make -j$(nproc) modules && \
-    make -j$(nproc) rk3588s-orangepi-5.dtb rk3588-orangepi-5-plus.dtb
+    make -j$(nproc) dtbs
+    #make -j$(nproc) rk3588s-orangepi-5.dtb rk3588-orangepi-5-plus.dtb
 
 RUN --mount=type=cache,target=/kernel/build \
     mkdir -p /kernel/out/boot && \
