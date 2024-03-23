@@ -70,8 +70,6 @@ jobs:
           set: |
             *.cache-from=type=gha
             *.cache-to=type=gha,mode=max
-            *.labels.org.opencontainers.image.created=${{ steps.meta.outputs.created }}
-            *.labels.org.opencontainers.image.version=${{ steps.meta.outputs.version }}
             *.labels.org.opencontainers.image.source=${{ github.repositoryUrl }}
 
       - name: Build and push Talos installer and imager
@@ -82,6 +80,4 @@ jobs:
           set: |
             *.cache-from=type=gha
             *.cache-to=type=gha,mode=max
-            *.labels.org.opencontainers.image.created=${{ steps.meta.outputs.created }}
-            *.labels.org.opencontainers.image.version=${{ steps.meta.outputs.version }}
             *.labels.org.opencontainers.image.source=${{ github.repositoryUrl }}
