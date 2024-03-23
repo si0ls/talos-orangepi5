@@ -61,8 +61,8 @@ RUN --mount=type=cache,target=/kernel/build \
     make -j$(nproc) olddefconfig && \
     make -j$(nproc) && \
     make -j$(nproc) modules && \
-    make -j$(nproc) dtbs
-    #make -j$(nproc) rk3588s-orangepi-5.dtb rk3588-orangepi-5-plus.dtb
+    make -j$(nproc) rockchip/rk3588s-orangepi-5.dtb rockchip/rk3588-orangepi-5-plus.dtb
+    #make -j$(nproc) dtbs
 
 RUN --mount=type=cache,target=/kernel/build \
     mkdir -p /kernel/out/boot && \
@@ -72,7 +72,7 @@ RUN --mount=type=cache,target=/kernel/build \
     cp -r /kernel/build/arch/arm64/boot/Image /kernel/out/boot/vmlinuz && \
     cp -r /kernel/build/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtb /kernel/out/dtb/rockchip/rk3588s-orangepi-5.dtb && \
     cp -r /kernel/build/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dtb /kernel/out/dtb/rockchip/rk3588-orangepi-5-plus.dtb && \
-    cp -r /kernel/build/arch/arm54/boot/dts/rockchip/overlay/rk3588* /kernel/out/dtb/rockchip/ && \
+    cp -r /kernel/build/arch/arm54/boot/dts/rockchip/overlay /kernel/out/dtb/rockchip/overlay && \
     export KERNEL_RELEASE=$(cat /kernel/build/include/config/kernel.release) && \
     make -j$(nproc) modules_install INSTALL_MOD_PATH=/kernel/out INSTALL_MOD_STRIP=1 && \
     depmod -b /kernel/out $KERNEL_RELEASE && \
