@@ -41,16 +41,11 @@ INSTALLER_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(INSTALLER_OUTPUT_NAME):$(IN
 BUILD := docker buildx build
 PROGRESS ?= auto
 PLATFORM ?= linux/arm64
-CACHE ?= false
-CACHE_PATH ?= /tmp/.buildx-cache
 ARCH ?= $(shell echo $(PLATFORM) | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 COMMON_ARGS := --progress=$(PROGRESS)
 COMMON_ARGS += --platform=$(PLATFORM)
-COMMON_ARGS += --build-arg IMAGE_SOURCE=$(SOURCE)
-COMMON_ARGS += --build-arg IMAGE_AUTHORS=$(AUTHORS)
-if eq ($(CACHE), true)
-COMMON_ARGS += --cache-from type=local,src=/tmp/$(CACHE_PATH) --cache-to type=local,dest=/tmp/$(CACHE_PATH),mode=max
-endif
+COMMON_ARGS += --build-arg=IMAGE_SOURCE=$(SOURCE)
+COMMON_ARGS += --build-arg=IMAGE_AUTHORS=$(AUTHORS)
 
 .PHONY: all
 all: build
