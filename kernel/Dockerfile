@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 
+ARG TARGETARCH
+
 FROM ubuntu:22.04 AS base-arm64
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
@@ -38,6 +40,8 @@ RUN mkdir -p /kernel/src && \
     curl -L $KERNEL_SOURCE | tar -xz -C /kernel/src --strip-components=1
 
 FROM base-arm64 AS builder-arm64
+
+ARG TARGETARCH
 
 COPY --from=downloader-arm64 /kernel/src /kernel/src
 
