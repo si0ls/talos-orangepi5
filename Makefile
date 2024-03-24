@@ -40,8 +40,7 @@ INSTALLER_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(INSTALLER_OUTPUT_NAME):$(IN
 
 BUILD := docker buildx build
 PROGRESS ?= auto
-PLATFORM ?= linux/arm64
-ARCH ?= $(shell echo $(PLATFORM) | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
+PLATFORM ?= linux/arm64, linux/amd64
 COMMON_ARGS := --progress=$(PROGRESS)
 COMMON_ARGS += --platform=$(PLATFORM)
 COMMON_ARGS += --push=$(PUSH)
@@ -91,9 +90,8 @@ imager: imager/talos
 		USERNAME=$(USERNAME) \
 		TAG=$(TALOS_TAG) \
 		PKG_KERNEL=$(KERNEL_OUTPUT_IMAGE)
-		PLATFORM=$(PLATFORM) \
+		PLATFORM=linux/arm64 \
 		PUSH=$(PUSH) \
-		ARCH=$(ARCH) \
 		target-$@ \
 		TARGET_ARGS="--output type=image,name=$(IMAGER_OUTPUT_IMAGE) \
 			--label org.opencontainers.image.name=$(IMAGER_OUTPUT_NAME) \

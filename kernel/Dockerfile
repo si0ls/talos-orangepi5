@@ -33,9 +33,7 @@ ARG KERNEL_SOURCE=https://git.kernel.org/torvalds/t/linux-${KERNEL_VERSION}.tar.
 RUN mkdir -p /kernel/src && \
     curl -L $KERNEL_SOURCE | tar -xz -C /kernel/src --strip-components=1
 
-FROM base AS builder
-
-ARG TARGET_ARCH=arm64
+FROM base AS builder-arm64
 
 COPY --from=downloader /kernel/src /kernel/src
 
@@ -48,7 +46,7 @@ COPY ./certs/* /kernel/certs/
 COPY config /kernel/.config
 
 ENV KBUILD_OUTPUT=/kernel/build
-ENV ARCH=${TARGET_ARCH}
+ENV ARCH=${TARGETARCH}
 
 WORKDIR /kernel
 RUN --mount=type=cache,target=/kernel/build \
@@ -78,7 +76,7 @@ RUN --mount=type=cache,target=/kernel/build \
     depmod -b /kernel/out $KERNEL_RELEASE && \
     unlink /kernel/out/lib/modules/$KERNEL_RELEASE/build
 
-FROM scratch AS kernel
+FROM scratch AS kernel-arm64
 
 ARG KERNEL_VERSION=6.8
 ARG IMAGE_NAME="talos-orangepi5-kernel"
@@ -98,3 +96,9 @@ LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
 LABEL org.opencontainers.image.version $IMAGE_VERSION
 
 COPY --from=builder /kernel/out/ /
+
+FROM scratch AS kernel-amd64
+
+RUN touch unsupported_arch_amd64
+
+FROM kernel-${TARGETARCH} AS kernel
