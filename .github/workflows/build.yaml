@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    name: Build & push Talos for Orange Pi 5
     permissions:
       actions: read
       contents: write

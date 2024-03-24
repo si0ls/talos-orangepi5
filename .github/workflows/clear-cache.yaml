@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  my-job:
+  clear-cache:
     name: Delete all caches
     runs-on: ubuntu-latest
     steps:
