@@ -58,24 +58,24 @@ build-%:
 	$(BUILD) \
 		$(COMMON_ARGS) \
 		$(BUILD_ARGS) \
-		--file $*/Dockerfile \
-		$*
+		--file=$*/Dockerfile \
+		$*/.
 
 .PHONY: kernel
 kernel:
 	$(MAKE) build-kernel \
-		BUILD_ARGS="--tag $(KERNEL_OUTPUT_IMAGE) \
-			--build-arg KERNEL_VERSION=$(KERNEL_VERSION) \
-			--build-arg KERNEL_SOURCE=$(KERNEL_SOURCE) \
+		BUILD_ARGS="--tag=$(KERNEL_OUTPUT_IMAGE) \
+			--build-arg=KERNEL_VERSION=$(KERNEL_VERSION) \
+			--build-arg=KERNEL_SOURCE=$(KERNEL_SOURCE) \
 			$(BUILD_ARGS)"
 
 .PHONY: u-boot
 u-boot:
 	$(MAKE) build-u-boot \
-		BUILD_ARGS="--tag $(U_BOOT_OUTPUT_IMAGE) \
-			--build-arg U_BOOT_VERSION=$(U_BOOT_VERSION) \
-			--build-arg U_BOOT_SOURCE=$(U_BOOT_SOURCE) \
-			--build-arg RKBIN_SOURCE=$(U_BOOT_RKBIN_SOURCE) \
+		BUILD_ARGS="--tag=$(U_BOOT_OUTPUT_IMAGE) \
+			--build-arg=U_BOOT_VERSION=$(U_BOOT_VERSION) \
+			--build-arg=U_BOOT_SOURCE=$(U_BOOT_SOURCE) \
+			--build-arg=RKBIN_SOURCE=$(U_BOOT_RKBIN_SOURCE) \
 			$(BUILD_ARGS)"
 
 imager/talos:
@@ -93,22 +93,22 @@ imager: imager/talos
 		PLATFORM=linux/arm64 \
 		PUSH=$(PUSH) \
 		target-$@ \
-		TARGET_ARGS="--output type=image,name=$(IMAGER_OUTPUT_IMAGE) \
-			--label org.opencontainers.image.name=$(IMAGER_OUTPUT_NAME) \
-			--label org.opencontainers.image.title=\"Talos Orange Pi 5 imager\"
-			--label org.opencontainers.image.description=\"Talos Orange Pi 5 imager\"
-			--label org.opencontainers.image.source=$(SOURCE) \
-			--label org.opencontainers.image.authors=$(AUTHORS) \
-			--label org.opencontainers.image.vendor=\"Sidero Labs, Inc.\" \
-			--label org.opencontainers.image.version=$(IMAGER_OUTPUT_TAG) \
+		TARGET_ARGS="--output=type=image,name=$(IMAGER_OUTPUT_IMAGE) \
+			--label=org.opencontainers.image.name=$(IMAGER_OUTPUT_NAME) \
+			--label=org.opencontainers.image.title=\"Talos Orange Pi 5 imager\"
+			--label=org.opencontainers.image.description=\"Talos Orange Pi 5 imager\"
+			--label=org.opencontainers.image.source=$(SOURCE) \
+			--label=org.opencontainers.image.authors=$(AUTHORS) \
+			--label=org.opencontainers.image.vendor=\"Sidero Labs, Inc.\" \
+			--label=org.opencontainers.image.version=$(IMAGER_OUTPUT_TAG) \
 			$(BUILD_ARGS)"
 
 .PHONY: installer
 installer:
 	$(MAKE) build-installer \
-		BUILD_ARGS="--tag $(INSTALLER_OUTPUT_IMAGE) \
-			--build-arg KERNEL=$(KERNEL_OUTPUT_IMAGE) \
-			--build-arg VERSION=$(INSTALLER_VERSION) \
+		BUILD_ARGS="--tag=$(INSTALLER_OUTPUT_IMAGE) \
+			--build-arg=KERNEL=$(KERNEL_OUTPUT_IMAGE) \
+			--build-arg=VERSION=$(INSTALLER_VERSION) \
 			$(BUILD_ARGS)"
 
 .PHONY: push
