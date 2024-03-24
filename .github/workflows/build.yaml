@@ -106,13 +106,13 @@ jobs:
           skip-extraction: ${{ steps.cache-installer-go.outputs.cache-hit }}
 
       - name: Build & push Kernel
-        run: make kernel PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=kernel --cache-to=type=gha,mode=max,scope=kernel"
+        run: make kernel PUSH=true BUILD_ARGS="--cache-to=\"type=gha,scope=kernel\" --cache-to=\"type=gha,mode=max,scope=kernel\""
 
       - name: Build & push U-Boot
-        run: make u-boot PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=u-boot --cache-to=type=gha,mode=max,scope=u-boot"
+        run: make u-boot PUSH=true BUILD_ARGS="--cache-to=\"type=gha,scope=u-boot\" --cache-to=\"type=gha,mode=max,scope=u-boot\""
 
       - name: Build & push Talos imager
-        run: make imager PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=imager --cache-to=type=gha,mode=max,scope=imager"
+        run: make imager PUSH=true BUILD_ARGS="--cache-to=\"type=gha,scope=imager\" --cache-to=\"type=gha,mode=max,scope=imager\""
 
       - name: Build & push Talos installer
-        run: make installer PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=installer --cache-to=type=gha,mode=max,scope=installer"
+        run: make installer PUSH=true BUILD_ARGS="--cache-to=\"type=gha,scope=installer\" --cache-to=\"type=gha,mode=max,scope=installer\""
