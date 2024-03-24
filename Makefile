@@ -89,7 +89,7 @@ imager: imager/talos
 	@$(MAKE) -C $< \
 		REGISTRY=$(REGISTRY) \
 		USERNAME=$(USERNAME) \
-		TAG = $(TALOS_TAG) \
+		TAG=$(TALOS_TAG) \
 		PKG_KERNEL=$(KERNEL_OUTPUT_IMAGE)
 		PLATFORM=$(PLATFORM) \
 		PUSH=$(PUSH) \
