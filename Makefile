@@ -59,6 +59,7 @@ build-%:
 		$(COMMON_ARGS) \
 		$(BUILD_ARGS) \
 		--file="$*/Dockerfile" \
+		--target="$*" \
 		$*
 
 .PHONY: kernel
