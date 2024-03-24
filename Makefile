@@ -51,7 +51,7 @@ COMMON_ARGS += --build-arg=IMAGE_AUTHORS=$(AUTHORS)
 all: build
 
 .PHONY: build
-build: kernel u-boot | imager installer
+build: kernel u-boot imager installer
 
 .PHONY: build-%
 build-%:
