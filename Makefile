@@ -65,7 +65,7 @@ build-%:
 kernel:
 	$(MAKE) build-kernel \
 		BUILD_ARGS="--tag=\"$(KERNEL_OUTPUT_IMAGE)\" \
-			--build-arg=\"KERNEL_VERSION=$(KERNEL_VERSION)"\ \
+			--build-arg=\"KERNEL_VERSION=$(KERNEL_VERSION)\" \
 			--build-arg=\"KERNEL_SOURCE=$(KERNEL_SOURCE)\" \
 			$(BUILD_ARGS)"
 
