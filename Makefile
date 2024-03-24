@@ -55,7 +55,7 @@ build: kernel u-boot imager installer
 
 .PHONY: build-%
 build-%:
-	@$(BUILD) \
+	$(BUILD) \
 		$(COMMON_ARGS) \
 		$(BUILD_ARGS) \
 		--file $*/Dockerfile \
@@ -63,7 +63,7 @@ build-%:
 
 .PHONY: kernel
 kernel:
-	@$(MAKE) build-kernel \
+	$(MAKE) build-kernel \
 		BUILD_ARGS="--tag $(KERNEL_OUTPUT_IMAGE) \
 			--build-arg KERNEL_VERSION=$(KERNEL_VERSION) \
 			--build-arg KERNEL_SOURCE=$(KERNEL_SOURCE) \
@@ -71,7 +71,7 @@ kernel:
 
 .PHONY: u-boot
 u-boot:
-	@$(MAKE) build-u-boot \
+	$(MAKE) build-u-boot \
 		BUILD_ARGS="--tag $(U_BOOT_OUTPUT_IMAGE) \
 			--build-arg U_BOOT_VERSION=$(U_BOOT_VERSION) \
 			--build-arg U_BOOT_SOURCE=$(U_BOOT_SOURCE) \
@@ -79,13 +79,13 @@ u-boot:
 			$(BUILD_ARGS)"
 
 imager/talos:
-	@git clone --depth 1 --single-branch --branch $(TALOS_TAG) $(TALOS_SOURCE) $@ && \
+	git clone --depth 1 --single-branch --branch $(TALOS_TAG) $(TALOS_SOURCE) $@ && \
 		sed -i "s/DefaultKernelVersion = \".*\"/DefaultKernelVersion = \"$(KERNEL_VERSION)\"/g" $@/pkg/machinery/constants/constants.go && \
 		rm $@/hack/modules-arm64.txt && cp imager/modules.txt $@/hack/modules-arm64.txt
 
 .PHONY: imager
 imager: imager/talos
-	@$(MAKE) -C $< \
+	$(MAKE) -C $< \
 		REGISTRY=$(REGISTRY) \
 		USERNAME=$(USERNAME) \
 		TAG=$(TALOS_TAG) \
@@ -105,7 +105,7 @@ imager: imager/talos
 
 .PHONY: installer
 installer:
-	@$(MAKE) build-installer \
+	$(MAKE) build-installer \
 		BUILD_ARGS="--tag $(INSTALLER_OUTPUT_IMAGE) \
 			--build-arg KERNEL=$(KERNEL_OUTPUT_IMAGE) \
 			--build-arg VERSION=$(INSTALLER_VERSION) \
@@ -113,8 +113,8 @@ installer:
 
 .PHONY: push
 push:
-	@$(MAKE) build PUSH=true
+	$(MAKE) build PUSH=true
 
 .PHONY: clean
 clean:
-	@rm -rf imager/talos
+	rm -rf imager/talos
