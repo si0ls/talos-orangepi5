@@ -50,7 +50,7 @@ COPY ./certs/* /kernel/certs/
 COPY config /kernel/.config
 
 ENV KBUILD_OUTPUT=/kernel/build
-ENV ARCH=${TARGETARCH}
+ENV ARCH=arm64
 
 WORKDIR /kernel
 RUN --mount=type=cache,target=/kernel/build \
