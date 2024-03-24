@@ -29,6 +29,7 @@ U_BOOT_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(U_BOOT_OUTPUT_NAME):$(U_BOOT_O
 TALOS_TAG ?= v1.7.0-alpha.1
 TALOS_SOURCE ?= https://github.com/siderolabs/talos.git
 TALOS_VERSION ?= $(TALOS_TAG)
+TALOS_AMD64_KERNEL ?= ghcr.io/siderolabs/kernel:v1.7.0-alpha.0-35-g8804a60
 IMAGER_OUTPUT_NAME ?= $(NAME)-imager
 IMAGER_OUTPUT_TAG ?= $(TALOS_VERSION)-$(TAG)
 IMAGER_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(IMAGER_OUTPUT_NAME):$(IMAGER_OUTPUT_TAG)
@@ -92,16 +93,18 @@ imager: imager/talos
 		TAG="$(TALOS_TAG)" \
 		PKG_KERNEL="$(KERNEL_OUTPUT_IMAGE)"
 		PLATFORM="linux/arm64" \
+		ARCH="arm64" \
 		PUSH="$(PUSH)"" \
 		target-$@ \
-		TARGET_ARGS="--output=type=image,name=\"$(IMAGER_OUTPUT_IMAGE)\" \
-			--label=org.opencontainers.image.name=\"$(IMAGER_OUTPUT_NAME)\" \
-			--label=org.opencontainers.image.title=\"Talos Orange Pi 5 imager\"
-			--label=org.opencontainers.image.description=\"Talos Orange Pi 5 imager\"
-			--label=org.opencontainers.image.source=\"$(SOURCE)\" \
-			--label=org.opencontainers.image.authors=\"$(AUTHORS)\" \
-			--label=org.opencontainers.image.vendor=\"Sidero Labs, Inc.\" \
-			--label=org.opencontainers.image.version=\"$(IMAGER_OUTPUT_TAG)\" \
+		TARGET_ARGS="--output=\"type=image,name=$(IMAGER_OUTPUT_IMAGE)\" \
+			--label=\"org.opencontainers.image.name=$(IMAGER_OUTPUT_NAME)\" \
+			--label=\"org.opencontainers.image.title=Talos Orange Pi 5 imager\"
+			--label=\"org.opencontainers.image.description=Talos Orange Pi 5 imager\"
+			--label=\"org.opencontainers.image.source=$(SOURCE)\" \
+			--label=\"org.opencontainers.image.authors=$(AUTHORS)\" \
+			--label=\"org.opencontainers.image.vendor=Sidero Labs, Inc.\" \
+			--label=\"org.opencontainers.image.version=$(IMAGER_OUTPUT_TAG)\" \
+			--build-context=\"pkg-kernel-amd64:$(TALOS_AMD64_KERNEL)\" \
 			$(BUILD_ARGS)"
 
 .PHONY: installer
