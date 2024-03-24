@@ -104,7 +104,6 @@ imager: imager/talos
 			--label=\"org.opencontainers.image.authors=$(AUTHORS)\" \
 			--label=\"org.opencontainers.image.vendor=Sidero Labs, Inc.\" \
 			--label=\"org.opencontainers.image.version=$(IMAGER_OUTPUT_TAG)\" \
-			--build-context=\"pkg-kernel-amd64=docker-image://$(TALOS_AMD64_KERNEL)\" \
 			$(BUILD_ARGS)"
 
 .PHONY: installer
