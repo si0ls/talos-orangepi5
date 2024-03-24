@@ -92,9 +92,9 @@ imager: imager/talos
 		USERNAME="$(USERNAME)" \
 		TAG="$(TALOS_TAG)" \
 		PKG_KERNEL="$(KERNEL_OUTPUT_IMAGE)" \
-		PLATFORM="linux/arm64" \
-		ARCH="arm64" \
-		PUSH="$(PUSH)"" \
+		PLATFORM=linux/arm64 \
+		ARCH=arm64 \
+		PUSH=$(PUSH) \
 		target-$@ \
 		TARGET_ARGS="--output=\"type=image,name=$(IMAGER_OUTPUT_IMAGE)\" \
 			--label=\"org.opencontainers.image.name=$(IMAGER_OUTPUT_NAME)\" \
