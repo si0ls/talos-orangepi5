@@ -4,7 +4,7 @@ REGISTRY ?= ghcr.io
 USERNAME ?= si0ls
 REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 SOURCE ?= https://github.com/${USERNAME}/${NAME}.git
-AUTHORS ?= "Louis S. <louis@schne.id>"
+AUTHORS ?= Louis S. <louis@schne.id>
 PUSH ?= false
 
 TAG ?= $(shell git describe --tag --always --dirty --match v[0-9]\*)
