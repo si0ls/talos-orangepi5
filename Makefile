@@ -40,7 +40,7 @@ INSTALLER_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(INSTALLER_OUTPUT_NAME):$(IN
 
 BUILD := docker buildx build
 PROGRESS ?= auto
-PLATFORM ?= linux/arm64, linux/amd64
+PLATFORM ?= linux/arm64,linux/amd64
 COMMON_ARGS := --progress="$(PROGRESS)"
 COMMON_ARGS += --platform="$(PLATFORM)"
 COMMON_ARGS += --push="$(PUSH)"
