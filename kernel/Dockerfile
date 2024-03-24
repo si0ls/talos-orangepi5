@@ -95,7 +95,7 @@ LABEL org.opencontainers.image.authors $IMAGE_AUTHORS
 LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
 LABEL org.opencontainers.image.version $IMAGE_VERSION
 
-COPY --from=builder /kernel/out/ /
+COPY --from=builder-arm64 /kernel/out/ /
 
 FROM scratch AS kernel-amd64
 
