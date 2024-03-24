@@ -44,6 +44,7 @@ PLATFORM ?= linux/arm64
 ARCH ?= $(shell echo $(PLATFORM) | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 COMMON_ARGS := --progress=$(PROGRESS)
 COMMON_ARGS += --platform=$(PLATFORM)
+COMMON_ARGS += --push=$(PUSH)
 COMMON_ARGS += --build-arg=IMAGE_SOURCE=$(SOURCE)
 COMMON_ARGS += --build-arg=IMAGE_AUTHORS=$(AUTHORS)
 
