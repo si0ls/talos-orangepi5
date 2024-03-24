@@ -37,6 +37,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
       - name: Cache Kernel build
         id: cache-kernel-build
         uses: actions/cache@v4
