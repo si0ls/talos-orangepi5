@@ -42,6 +42,7 @@ jobs:
         id: cache-kernel-build
         uses: actions/cache@v3
         with:
+          save-always: true
           path: kernel-build
           key: kernel-build-${{ hashFiles('kernel/Dockerfile') }}
 
@@ -49,6 +50,7 @@ jobs:
         id: cache-u-boot-build
         uses: actions/cache@v3
         with:
+          save-always: true
           path: u-boot-build
           key: u-boot-build-${{ hashFiles('u-boot/Dockerfile') }}
 
@@ -56,6 +58,7 @@ jobs:
         id: cache-installer-gomod
         uses: actions/cache@v3
         with:
+          save-always: true
           path: installer-gomod
           key: installer-gomod-${{ hashFiles('installer/Dockerfile') }}
 
@@ -63,6 +66,7 @@ jobs:
         id: cache-installer-go
         uses: actions/cache@v3
         with:
+          save-always: true
           path: installer-go
           key: installer-go-${{ hashFiles('installer/Dockerfile') }}
 
@@ -83,14 +87,14 @@ jobs:
       - name: Inject installer go mod cache into buildx
         uses: reproducible-containers/buildkit-cache-dance@v2.1.4
         with:
-          cache-source: cache-installer-gomod
+          cache-source: installer-gomod
           cache-target: /.cache/gomod
           skip-extraction: ${{ steps.cache-installer-gomod.outputs.cache-hit }}
 
       - name: Inject installer go cache into buildx
         uses: reproducible-containers/buildkit-cache-dance@v2.1.4
         with:
-          cache-source: cache-installer-go
+          cache-source: installer-go
           cache-target: /.cache/go
           skip-extraction: ${{ steps.cache-installer-go.outputs.cache-hit }}
 
