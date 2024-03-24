@@ -44,8 +44,8 @@ PLATFORM ?= linux/arm64,linux/amd64
 COMMON_ARGS := --progress="$(PROGRESS)"
 COMMON_ARGS += --platform="$(PLATFORM)"
 COMMON_ARGS += --push="$(PUSH)"
-COMMON_ARGS += --build-arg=IMAGE_SOURCE="$(SOURCE)"
-COMMON_ARGS += --build-arg=IMAGE_AUTHORS="$(AUTHORS)"
+COMMON_ARGS += --build-arg="IMAGE_SOURCE="$(SOURCE)"
+COMMON_ARGS += --build-arg="IMAGE_AUTHORS="$(AUTHORS)"
 
 .PHONY: all
 all: build
