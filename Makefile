@@ -57,7 +57,6 @@ build: kernel u-boot imager installer
 build-%:
 	@$(BUILD) \
 		$(COMMON_ARGS) \
-		--context $* \
 		--file $*/Dockerfile \
 		$(BUILD_ARGS)
 
