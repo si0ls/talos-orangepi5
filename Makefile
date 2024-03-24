@@ -92,7 +92,7 @@ imager: imager/talos
 		TAG = $(TALOS_TAG) \
 		PKG_KERNEL=$(KERNEL_OUTPUT_IMAGE)
 		PLATFORM=$(PLATFORM) \
-		PUSH=$(PUSH)
+		PUSH=$(PUSH) \
 		ARCH=$(ARCH) \
 		target-$@ \
 		TARGET_ARGS="--output type=image,name=$(IMAGER_OUTPUT_IMAGE) \
