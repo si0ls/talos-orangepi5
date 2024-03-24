@@ -39,7 +39,7 @@ jobs:
 
       - name: Cache Kernel build
         id: cache-kernel-build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           save-always: true
           path: kernel-build
@@ -47,7 +47,7 @@ jobs:
 
       - name: Cache U-Boot build
         id: cache-u-boot-build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           save-always: true
           path: u-boot-build
@@ -55,7 +55,7 @@ jobs:
 
       - name: Cache imager Talos sources
         id: cache-imager-talos
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           save-always: true
           path: imager/talos
@@ -63,7 +63,7 @@ jobs:
 
       - name: Cache installer go mod build
         id: cache-installer-gomod
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           save-always: true
           path: installer-gomod
@@ -71,7 +71,7 @@ jobs:
 
       - name: Cache installer go build
         id: cache-installer-go
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           save-always: true
           path: installer-go
