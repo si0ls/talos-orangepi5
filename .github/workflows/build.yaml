@@ -95,4 +95,4 @@ jobs:
           skip-extraction: ${{ steps.cache-installer-go.outputs.cache-hit }}
 
       - name: Build & push
-        run: make build PUSH=true BUILD_ARGS="--cache-to type=gha --cache-to type=gha,mode=max"
+        run: make build PUSH=true BUILD_ARGS="--cache-to=type=gha --cache-to=type=gha,mode=max"
