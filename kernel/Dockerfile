@@ -99,6 +99,4 @@ COPY --from=builder-arm64 /kernel/out/ /
 
 FROM scratch AS kernel-amd64
 
-RUN touch unsupported_arch_amd64
-
 FROM kernel-${TARGETARCH} AS kernel

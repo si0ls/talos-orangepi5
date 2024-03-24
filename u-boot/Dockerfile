@@ -112,6 +112,4 @@ COPY --from=builder-arm64 /u-boot/out/ /
 
 FROM scratch AS u-boot-amd64
 
-RUN touch unsupported_arch_amd64
-
 FROM u-boot-${TARGETARCH} AS u-boot
