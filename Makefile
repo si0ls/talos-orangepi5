@@ -58,7 +58,7 @@ build-%:
 	$(BUILD) \
 		$(COMMON_ARGS) \
 		$(BUILD_ARGS) \
-		--file=\"$*/Dockerfile\" \
+		--file="$*/Dockerfile" \
 		$*
 
 .PHONY: kernel
