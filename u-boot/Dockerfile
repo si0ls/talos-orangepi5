@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:22.04 AS base
+FROM ubuntu:22.04 AS base-arm64
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -51,7 +51,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     uuid-dev \
     && rm -rf /var/lib/apt/lists/*
 
-FROM base AS downloader
+FROM ubuntu:22.04 AS base-amd64
+
+RUN touch unsupported_arch_amd64
+
+FROM base-arm64 AS downloader-arm64
 
 ARG U_BOOT_VERSION=v2924.04-rc4
 ARG U_BOOT_SOURCE=https://source.denx.de/u-boot/u-boot/-/archive/${U_BOOT_VERSION}/u-boot-${U_BOOT_VERSION}.tar.gz
@@ -62,12 +66,12 @@ RUN mkdir -p /u-boot/src && \
     curl -L ${U_BOOT_SOURCE} | tar -xz -C /u-boot/src --strip-components=1 && \
     curl -L ${RKBIN_SOURCE} | tar -xz -C /u-boot/rkbin --strip-components=1
 
-FROM base AS builder-arm64
+FROM base-arm64 AS builder-arm64
 
 ARG TARGET_ARCH=arm64
 
-COPY --from=downloader /u-boot/src /u-boot/src
-COPY --from=downloader /u-boot/rkbin /u-boot/rkbin
+COPY --from=downloader-arm64 /u-boot/src /u-boot/src
+COPY --from=downloader-arm64 /u-boot/rkbin /u-boot/rkbin
 
 COPY ./patches /u-boot/patches
 
@@ -91,6 +95,14 @@ RUN --mount=type=cache,target=/u-boot/build \
 
 FROM scratch AS u-boot-arm64
 
+COPY --from=builder-arm64 /u-boot/out/ /
+
+FROM scratch AS u-boot-amd64
+
+COPY --from=base-amd64 /unsupported_arch_amd64 /unsupported_arch_amd64
+
+FROM u-boot-${TARGETARCH} AS u-boot
+
 ARG U_BOOT_VERSION=v2924.04-rc4
 ARG IMAGE_NAME="talos-orangepi5-u-boot"
 ARG IMAGE_TITLE="Talos Orange Pi 5 U-Boot"
@@ -108,8 +120,3 @@ LABEL org.opencontainers.image.authors $IMAGE_AUTHORS
 LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
 LABEL org.opencontainers.image.version $IMAGE_VERSION
 
-COPY --from=builder-arm64 /u-boot/out/ /
-
-FROM scratch AS u-boot-amd64
-
-FROM u-boot-${TARGETARCH} AS u-boot
