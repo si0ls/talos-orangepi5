@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:1
 
-ARG TARGETARCH
-
 FROM ubuntu:22.04 AS base-arm64
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
@@ -69,6 +67,8 @@ RUN mkdir -p /u-boot/src && \
     curl -L ${RKBIN_SOURCE} | tar -xz -C /u-boot/rkbin --strip-components=1
 
 FROM base-arm64 AS builder-arm64
+
+ARG TARGET_ARCH=arm64
 
 COPY --from=downloader-arm64 /u-boot/src /u-boot/src
 COPY --from=downloader-arm64 /u-boot/rkbin /u-boot/rkbin
