@@ -98,8 +98,8 @@ imager: imager/talos
 		target-$@ \
 		TARGET_ARGS="--output=\"type=image,name=$(IMAGER_OUTPUT_IMAGE)\" \
 			--label=\"org.opencontainers.image.name=$(IMAGER_OUTPUT_NAME)\" \
-			--label=\"org.opencontainers.image.title=Talos Orange Pi 5 imager\"
-			--label=\"org.opencontainers.image.description=Talos Orange Pi 5 imager\"
+			--label=\"org.opencontainers.image.title=Talos Orange Pi 5 imager\" \
+			--label=\"org.opencontainers.image.description=Talos Orange Pi 5 imager\" \
 			--label=\"org.opencontainers.image.source=$(SOURCE)\" \
 			--label=\"org.opencontainers.image.authors=$(AUTHORS)\" \
 			--label=\"org.opencontainers.image.vendor=Sidero Labs, Inc.\" \

@@ -62,7 +62,7 @@ jobs:
         with:
           save-always: true
           path: imager/talos
-          key: imager-talos-${{ hashFiles('Makefile') }}
+          key: imager-talos-${{ hashFiles('Makefile', 'imager/modules.txt') }}
 
       - name: Cache installer go mod build
         id: cache-installer-gomod
