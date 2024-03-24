@@ -44,7 +44,7 @@ jobs:
         with:
           save-always: true
           path: kernel-build
-          key: kernel-build-${{ hashFiles('kernel/Dockerfile') }}
+          key: kernel-build-${{ hashFiles('Makefile', 'kernel/Dockerfile') }}
 
       - name: Cache U-Boot build
         id: cache-u-boot-build
@@ -52,7 +52,15 @@ jobs:
         with:
           save-always: true
           path: u-boot-build
-          key: u-boot-build-${{ hashFiles('u-boot/Dockerfile') }}
+          key: u-boot-build-${{ hashFiles('Makefile', 'u-boot/Dockerfile') }}
+
+      - name: Cache imager Talos sources
+        id: cache-imager-talos
+        uses: actions/cache@v3
+        with:
+          save-always: true
+          path: imager/talos
+          key: imager-talos-${{ hashFiles('Makefile') }}
 
       - name: Cache installer go mod build
         id: cache-installer-gomod
@@ -60,7 +68,7 @@ jobs:
         with:
           save-always: true
           path: installer-gomod
-          key: installer-gomod-${{ hashFiles('installer/Dockerfile') }}
+          key: installer-gomod-${{ hashFiles('Makefile', 'installer/Dockerfile') }}
 
       - name: Cache installer go build
         id: cache-installer-go
@@ -68,7 +76,7 @@ jobs:
         with:
           save-always: true
           path: installer-go
-          key: installer-go-${{ hashFiles('installer/Dockerfile') }}
+          key: installer-go-${{ hashFiles('Makefile', 'installer/Dockerfile') }}
 
       - name: Inject Kernel build cache into buildx
         uses: reproducible-containers/buildkit-cache-dance@v2.1.4
@@ -98,5 +106,14 @@ jobs:
           cache-target: /.cache/go
           skip-extraction: ${{ steps.cache-installer-go.outputs.cache-hit }}
 
-      - name: Build & push
-        run: make build PUSH=true BUILD_ARGS="--cache-to=type=gha --cache-to=type=gha,mode=max"
+      - name: Build & push Kernel
+        run: make kernel PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=kernel --cache-to=type=gha,mode=max,scope=kernel"
+
+      - name: Build & push U-Boot
+        run: make u-boot PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=u-boot --cache-to=type=gha,mode=max,scope=u-boot"
+
+      - name: Build & push Talos imager
+        run: make imager PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=imager --cache-to=type=gha,mode=max,scope=imager"
+
+      - name: Build & push Talos installer
+        run: make installer PUSH=true BUILD_ARGS="--cache-to=type=gha,scope=installer --cache-to=type=gha,mode=max,scope=installer"
