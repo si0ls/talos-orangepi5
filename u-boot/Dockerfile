@@ -68,8 +68,6 @@ RUN mkdir -p /u-boot/src && \
 
 FROM base-arm64 AS builder-arm64
 
-ARG TARGET_ARCH=arm64
-
 COPY --from=downloader-arm64 /u-boot/src /u-boot/src
 COPY --from=downloader-arm64 /u-boot/rkbin /u-boot/rkbin
 

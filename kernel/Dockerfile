@@ -68,13 +68,13 @@ RUN --mount=type=cache,target=/kernel/build \
 
 RUN --mount=type=cache,target=/kernel/build \
     mkdir -p /kernel/out/boot && \
-    mkdir -p /kernel/out/dtb/rockchip && \
+    mkdir -p /kernel/out/dtb/rockchip/overlay && \
     mkdir -p /kernel/out/certs && \
     cp -r /kernel/build/certs/signing_key.x509 /kernel/out/certs/signing_key.x509 && \
     cp -r /kernel/build/arch/arm64/boot/Image /kernel/out/boot/vmlinuz && \
     cp -r /kernel/build/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtb /kernel/out/dtb/rockchip/rk3588s-orangepi-5.dtb && \
     cp -r /kernel/build/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dtb /kernel/out/dtb/rockchip/rk3588-orangepi-5-plus.dtb && \
-    #cp -r /kernel/build/arch/arm54/boot/dts/rockchip/overlay /kernel/out/dtb/rockchip/overlay && \
+    cp -r /kernel/build/arch/arm54/boot/dts/rockchip/overlay/* /kernel/out/dtb/rockchip/overlay && \
     export KERNEL_RELEASE=$(cat /kernel/build/include/config/kernel.release) && \
     make -j$(nproc) modules_install INSTALL_MOD_PATH=/kernel/out INSTALL_MOD_STRIP=1 && \
     depmod -b /kernel/out $KERNEL_RELEASE && \
