@@ -91,7 +91,7 @@ imager: imager/talos
 		REGISTRY="$(REGISTRY)" \
 		USERNAME="$(USERNAME)" \
 		TAG="$(TALOS_TAG)" \
-		PKG_KERNEL="$(KERNEL_OUTPUT_IMAGE)"
+		PKG_KERNEL="$(KERNEL_OUTPUT_IMAGE)" \
 		PLATFORM="linux/arm64" \
 		ARCH="arm64" \
 		PUSH="$(PUSH)"" \
