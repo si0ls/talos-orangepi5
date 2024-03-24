@@ -22,6 +22,23 @@ RUN --mount=type=cache,target=/.cache/gomod \
 
 FROM scratch AS installer
 
+ARG VERSION
+ARG IMAGE_NAME="talos-orangepi5-installer"
+ARG IMAGE_TITLE="Talos Orange Pi 5 Installer"
+ARG IMAGE_DESCRIPTION=$IMAGE_TITLE
+ARG IMAGE_SOURCE="https://github.com/si0ls/talos-orangepi5"
+ARG IMAGE_AUTHORS="Louis S. <louis@schne.id>"
+ARG IMAGE_VENDOR=$IMAGE_AUTHORS
+ARG IMAGE_VERSION=$VERSION
+
+LABEL org.opencontainers.image.name $IMAGE_NAME
+LABEL org.opencontainers.image.title $IMAGE_TITLE
+LABEL org.opencontainers.image.description $IMAGE_DESCRIPTION
+LABEL org.opencontainers.image.source $IMAGE_SOURCE
+LABEL org.opencontainers.image.authors $IMAGE_AUTHORS
+LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
+LABEL org.opencontainers.image.version $IMAGE_VERSION
+
 COPY --from=kernel /dtb/rockchip/rk3588s-orangepi-5.dtb /artifacts/arm64/dtb/rk3588s-orangepi-5.dtb
 COPY --from=builder /orangepi-5 /orangepi-5
 COPY profile.yaml /orangepi-5.yaml

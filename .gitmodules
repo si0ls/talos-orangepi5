@@ -1,3 +1,0 @@
-[submodule "imager/talos"]
-	path = imager/talos
-	url = https://github.com/siderolabs/talos.git

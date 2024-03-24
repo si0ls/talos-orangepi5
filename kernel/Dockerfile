@@ -31,7 +31,7 @@ ARG KERNEL_VERSION=6.8
 ARG KERNEL_SOURCE=https://git.kernel.org/torvalds/t/linux-${KERNEL_VERSION}.tar.gz
 
 RUN mkdir -p /kernel/src && \
-    curl -L https://git.kernel.org/torvalds/t/linux-${KERNEL_VERSION}.tar.gz | tar -xz -C /kernel/src --strip-components=1
+    curl -L $KERNEL_SOURCE | tar -xz -C /kernel/src --strip-components=1
 
 FROM base AS builder
 
@@ -79,5 +79,22 @@ RUN --mount=type=cache,target=/kernel/build \
     unlink /kernel/out/lib/modules/$KERNEL_RELEASE/build
 
 FROM scratch AS kernel
+
+ARG KERNEL_VERSION=6.8
+ARG IMAGE_NAME="talos-orangepi5-kernel"
+ARG IMAGE_TITLE="Talos Orange Pi 5 Kernel"
+ARG IMAGE_DESCRIPTION=$IMAGE_TITLE
+ARG IMAGE_SOURCE="https://github.com/si0ls/talos-orangepi5"
+ARG IMAGE_AUTHORS="Louis S. <louis@schne.id>"
+ARG IMAGE_VENDOR="The Linux Foundation"
+ARG IMAGE_VERSION=$KERNEL_VERSION
+
+LABEL org.opencontainers.image.name $IMAGE_NAME
+LABEL org.opencontainers.image.title $IMAGE_TITLE
+LABEL org.opencontainers.image.description $IMAGE_DESCRIPTION
+LABEL org.opencontainers.image.source $IMAGE_SOURCE
+LABEL org.opencontainers.image.authors $IMAGE_AUTHORS
+LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
+LABEL org.opencontainers.image.version $IMAGE_VERSION
 
 COPY --from=builder /kernel/out/ /

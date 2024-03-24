@@ -91,4 +91,21 @@ RUN --mount=type=cache,target=/u-boot/build \
 
 FROM scratch AS u-boot
 
+ARG U_BOOT_VERSION=v2924.04-rc4
+ARG IMAGE_NAME="talos-orangepi5-u-boot"
+ARG IMAGE_TITLE="Talos Orange Pi 5 U-Boot"
+ARG IMAGE_DESCRIPTION=$IMAGE_TITLE
+ARG IMAGE_SOURCE="https://github.com/si0ls/talos-orangepi5"
+ARG IMAGE_AUTHORS="Louis S. <louis@schne.id>"
+ARG IMAGE_VENDOR="Denx Software Engineering"
+ARG IMAGE_VERSION=$U_BOOT_VERSION
+
+LABEL org.opencontainers.image.name $IMAGE_NAME
+LABEL org.opencontainers.image.title $IMAGE_TITLE
+LABEL org.opencontainers.image.description $IMAGE_DESCRIPTION
+LABEL org.opencontainers.image.source $IMAGE_SOURCE
+LABEL org.opencontainers.image.authors $IMAGE_AUTHORS
+LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
+LABEL org.opencontainers.image.version $IMAGE_VERSION
+
 COPY --from=builder /u-boot/out/ /
