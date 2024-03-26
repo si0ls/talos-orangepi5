@@ -58,13 +58,13 @@ jobs:
           path: u-boot-build
           key: u-boot-build-${{ github.ref_name }}
 
-      - name: Cache imager Talos sources
-        id: cache-imager-talos
+      - name: Cache Talos sources
+        id: cache-talos
         uses: actions/cache@v4
         with:
           save-always: true
-          path: imager/talos
-          key: imager-talos-${{ github.ref_name }}
+          path: talos
+          key: talos-${{ github.ref_name }}
 
       - name: Cache installer go mod build
         id: cache-installer-gomod
