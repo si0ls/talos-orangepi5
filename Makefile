@@ -30,6 +30,7 @@ TALOS_TAG ?= v1.7.0-alpha.1
 TALOS_SOURCE ?= https://github.com/siderolabs/talos.git
 TALOS_VERSION ?= $(TALOS_TAG)
 TALOS_AMD64_KERNEL ?= ghcr.io/siderolabs/kernel:v1.7.0-alpha.0-35-g8804a60
+IMAGER_TALOS ?= talos/$(TALOS_VERSION)
 IMAGER_OUTPUT_NAME ?= $(NAME)-imager
 IMAGER_OUTPUT_TAG ?= $(TALOS_VERSION)-$(TAG)
 IMAGER_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(IMAGER_OUTPUT_NAME):$(IMAGER_OUTPUT_TAG)
@@ -80,13 +81,13 @@ u-boot:
 			--build-arg=\"RKBIN_SOURCE=$(U_BOOT_RKBIN_SOURCE)\" \
 			$(BUILD_ARGS)"
 
-imager/talos:
+$(IMAGER_TALOS):
 	git clone --depth 1 --single-branch --branch $(TALOS_TAG) $(TALOS_SOURCE) $@ && \
 		sed -i "s/DefaultKernelVersion = \".*\"/DefaultKernelVersion = \"$(KERNEL_VERSION)\"/g" $@/pkg/machinery/constants/constants.go && \
 		rm $@/hack/modules-arm64.txt && cp imager/modules.txt $@/hack/modules-arm64.txt
 
 .PHONY: imager
-imager: imager/talos
+imager: $(IMAGER_TALOS)
 	$(MAKE) -C $< \
 		REGISTRY="$(REGISTRY)" \
 		USERNAME="$(USERNAME)" \
@@ -121,4 +122,4 @@ push:
 
 .PHONY: clean
 clean:
-	rm -rf imager/talos
+	rm -rf $(IMAGER_TALOS)
