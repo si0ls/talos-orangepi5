@@ -48,7 +48,7 @@ jobs:
         with:
           save-always: true
           path: kernel-build
-          key: kernel-build-${{ hashFiles('Makefile', 'kernel/Dockerfile') }}
+          key: kernel-build-${{ github.ref_name }}
 
       - name: Cache U-Boot build
         id: cache-u-boot-build
@@ -56,7 +56,7 @@ jobs:
         with:
           save-always: true
           path: u-boot-build
-          key: u-boot-build-${{ hashFiles('Makefile', 'u-boot/Dockerfile') }}
+          key: u-boot-build-${{ github.ref_name }}
 
       - name: Cache imager Talos sources
         id: cache-imager-talos
@@ -64,7 +64,7 @@ jobs:
         with:
           save-always: true
           path: imager/talos
-          key: imager-talos-${{ hashFiles('Makefile', 'imager/modules.txt') }}
+          key: imager-talos-${{ github.ref_name }}
 
       - name: Cache installer go mod build
         id: cache-installer-gomod
@@ -72,7 +72,7 @@ jobs:
         with:
           save-always: true
           path: installer-gomod
-          key: installer-gomod-${{ hashFiles('Makefile', 'installer/Dockerfile') }}
+          key: installer-gomod-${{ github.ref_name }}
 
       - name: Cache installer go build
         id: cache-installer-go
@@ -80,7 +80,7 @@ jobs:
         with:
           save-always: true
           path: installer-go
-          key: installer-go-${{ hashFiles('Makefile', 'installer/Dockerfile') }}
+          key: installer-go-${{ github.ref_name }}
 
       - name: Inject Kernel build cache into buildx
         uses: reproducible-containers/buildkit-cache-dance@v2.1.4
