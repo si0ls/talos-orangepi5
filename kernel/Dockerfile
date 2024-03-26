@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/kernel/build \
     make -j$(nproc) olddefconfig && \
     make -j$(nproc) && \
     make -j$(nproc) modules && \
-    make -j$(nproc) rockchip/rk3588s-orangepi-5.dtb rockchip/rk3588-orangepi-5-plus.dtb \
+    make -j$(nproc) rockchip/rk3588s-orangepi-5.dtb rockchip/rk3588-orangepi-5-plus.dtb && \
     make -j$(nproc) rockchip/overlay/rockchip-rk3588-sata1.dtbo rockchip/overlay/rockchip-rk3588-sata2.dtbo
     #make -j$(nproc) dtbs
 
