@@ -27,8 +27,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 FROM base AS downloader
 
-ARG KERNEL_VERSION=6.8
-ARG KERNEL_SOURCE=https://git.kernel.org/torvalds/t/linux-${KERNEL_VERSION}.tar.gz
+ARG KERNEL_VERSION=6.8.1
+ARG KERNEL_SOURCE=https://git.kernel.org/stable/t/linux-${KERNEL_VERSION}.tar.gz
 
 RUN mkdir -p /kernel/src && \
     curl -L $KERNEL_SOURCE | tar -xz -C /kernel/src --strip-components=1

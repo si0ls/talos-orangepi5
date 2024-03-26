@@ -9,8 +9,8 @@ PUSH ?= false
 
 TAG ?= $(shell git describe --tag --always --dirty --match v[0-9]\*)
 
-KERNEL_TAG ?= 6.8
-KERNEL_SOURCE ?= https://git.kernel.org/torvalds/t/linux-${KERNEL_TAG}.tar.gz
+KERNEL_TAG ?= 6.8.1
+KERNEL_SOURCE ?= https://git.kernel.org/stable/t/linux-${KERNEL_TAG}.tar.gz
 KERNEL_TAG_SEMVER ?= $(shell echo $(KERNEL_TAG) | sed 's/^\([0-9]*\.[0-9]*\)$$/\1.0/')
 KERNEL_TAINT ?= -$(NAME)
 KERNEL_VERSION ?= $(KERNEL_TAG_SEMVER)$(KERNEL_TAINT)
@@ -18,7 +18,7 @@ KERNEL_OUTPUT_NAME ?= $(NAME)-kernel
 KERNEL_OUTPUT_TAG ?= $(KERNEL_TAG_SEMVER)-$(TAG)
 KERNEL_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(KERNEL_OUTPUT_NAME):$(KERNEL_OUTPUT_TAG)
 
-U_BOOT_TAG ?= v2024.04-rc4
+U_BOOT_TAG ?= v2024.04-rc5
 U_BOOT_SOURCE ?= https://gitlab.denx.de/u-boot/u-boot/-/archive/$(U_BOOT_TAG)/u-boot-$(U_BOOT_TAG).tar.gz
 U_BOOT_RKBIN_SOURCE ?= https://github.com/rockchip-linux/rkbin/archive/refs/heads/master.tar.gz
 U_BOOT_VERSION ?= $(U_BOOT_TAG)

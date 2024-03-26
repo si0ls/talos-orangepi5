@@ -53,7 +53,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 FROM base AS downloader
 
-ARG U_BOOT_VERSION=v2924.04-rc4
+ARG U_BOOT_VERSION=v2024.04-rc5
 ARG U_BOOT_SOURCE=https://source.denx.de/u-boot/u-boot/-/archive/${U_BOOT_VERSION}/u-boot-${U_BOOT_VERSION}.tar.gz
 ARG RKBIN_SOURCE=https://github.com/rockchip-linux/rkbin/archive/refs/heads/master.tar.gz
 
