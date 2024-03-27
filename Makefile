@@ -38,6 +38,12 @@ SATA_EXTENSION_OUTPUT_NAME ?= $(NAME)-sata-extension
 SATA_EXTENSION_OUTPUT_TAG ?= $(TAG)
 SATA_EXTENSION_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(SATA_EXTENSION_OUTPUT_NAME):$(SATA_EXTENSION_OUTPUT_TAG)
 
+EXTENSIONS :=
+SATA ?= false
+if [ "$(SATA)" = "true" ]; then
+	EXTENSIONS += --system-extension-image=$(SATA_EXTENSION_OUTPUT_IMAGE)
+endif
+
 BUILD := docker buildx build
 PROGRESS ?= auto
 PLATFORM ?= linux/arm64
@@ -106,7 +112,7 @@ installer:
 			$(BUILD_ARGS)"
 
 .PHONY: sata-extension
-installer:
+sata-extension:
 	$(MAKE) build-sata-extension \
 		BUILD_ARGS="--tag=\"$(SATA_EXTENSION_OUTPUT_IMAGE)\" \
 			--build-arg=KERNEL=\"$(KERNEL_OUTPUT_IMAGE)\" \
@@ -128,7 +134,8 @@ $(ARTIFACTS):
 		metal \
 		--arch=arm64 \
 		--overlay-name=orangepi-5 \
-		--overlay-image=$(INSTALLER_OUTPUT_IMAGE)
+		--overlay-image=$(INSTALLER_OUTPUT_IMAGE) \
+		$(EXTENSIONS)
 
 .PHONY: push
 push:
