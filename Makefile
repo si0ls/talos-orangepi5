@@ -133,7 +133,6 @@ artifacts:
 		--net=host \
 		-v /dev:/dev \
 		--rm \
-		-it \
 		-v $(ARTIFACTS):/out \
 		$(IMAGER_OUTPUT_IMAGE) \
 		metal \
