@@ -2,7 +2,7 @@ ARG KERNEL
 
 FROM ${KERNEL} AS kernel
 
-FROM scratch AS extension
+FROM scratch AS sata-extension
 
 ARG VERSION
 ARG IMAGE_NAME="talos-orangepi5-sata-extension"
