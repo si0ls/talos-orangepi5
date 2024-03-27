@@ -22,5 +22,5 @@ LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
 LABEL org.opencontainers.image.version $IMAGE_VERSION
 
 COPY manifest.yaml /manifest.yaml
-COPY --from=kernel /dtb/rockchip/overlay/rk3588-ssd-sata0.dtbo /rootfs/dtb/overlay/rk3588-ssd-sata0.dtbo
-COPY --from=kernel /dtb/rockchip/overlay/rk3588-ssd-sata1.dtbo /rootfs/dtb/overlay/rk3588-ssd-sata1.dtbo
+COPY --from=kernel /dtb/rockchip/overlay/rockchip-rk3588-sata1.dtbo /rootfs/dtb/overlay/rockchip-rk3588-sata1.dtbo
+COPY --from=kernel /dtb/rockchip/overlay/rockchip-rk3588-sata2.dtbo /rootfs/dtb/overlay/rockchip-rk3588-sata2.dtbo
