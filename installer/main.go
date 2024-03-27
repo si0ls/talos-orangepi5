@@ -29,7 +29,7 @@ type boardExtraOptions struct {
 
 func (i *BoardInstaller) GetOptions(extra boardExtraOptions) (overlay.Options, error) {
 	kernelArgs := []string{
-		"console=tty0",
+		"console=tty1",
 		"console=ttyS2:1500000",
 		"sysctl.kernel.kexec_load_disabled=1",
 		"talos.dashboard.disabled=1",
@@ -59,7 +59,7 @@ func (i *BoardInstaller) Install(options overlay.InstallOptions[boardExtraOption
 	}
 
 	src := filepath.Join(options.ArtifactsPath, "arm64/dtb", dtb)
-	dst := filepath.Join(options.MountPrefix, "/boot/dtb", dtb)
+	dst := filepath.Join(options.MountPrefix, "/dtb/base", dtb)
 
 	err = os.MkdirAll(filepath.Dir(dst), 0o600)
 	if err != nil {
