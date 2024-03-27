@@ -114,6 +114,7 @@ installer:
 	$(MAKE) build-installer \
 		BUILD_ARGS="--tag=\"$(INSTALLER_OUTPUT_IMAGE)\" \
 			--build-arg=KERNEL=\"$(KERNEL_OUTPUT_IMAGE)\" \
+			--build-arg=U_BOOT=\"$(U_BOOT_OUTPUT_IMAGE)\" \
 			--build-arg=VERSION=\"$(INSTALLER_VERSION)\" \
 			$(BUILD_ARGS)"
 
