@@ -50,14 +50,6 @@ jobs:
           path: kernel-build
           key: kernel-build-${{ github.ref_name }}
 
-      - name: Cache U-Boot build
-        id: cache-u-boot-build
-        uses: actions/cache@v4
-        with:
-          save-always: true
-          path: u-boot-build
-          key: u-boot-build-${{ github.ref_name }}
-
       - name: Cache Talos sources
         id: cache-talos
         uses: actions/cache@v4
@@ -89,13 +81,6 @@ jobs:
           cache-target: /kernel/build
           skip-extraction: ${{ steps.cache-kernel-build.outputs.cache-hit }}
 
-      - name: Inject U-Boot build cache into buildx
-        uses: reproducible-containers/buildkit-cache-dance@v2.1.4
-        with:
-          cache-source: u-boot-build
-          cache-target: /u-boot/build
-          skip-extraction: ${{ steps.cache-u-boot-build.outputs.cache-hit }}
-
       - name: Inject installer go mod cache into buildx
         uses: reproducible-containers/buildkit-cache-dance@v2.1.4
         with:
@@ -112,9 +97,6 @@ jobs:
 
       - name: Build & push Kernel
         run: make kernel PUSH=true BUILD_ARGS="--cache-from=type=gha,scope=kernel --cache-to=type=gha,mode=max,scope=kernel"
-
-      - name: Build & push U-Boot
-        run: make u-boot PUSH=true BUILD_ARGS="--cache-from=type=gha,scope=u-boot --cache-to=type=gha,mode=max,scope=u-boot"
 
       - name: Build & push Talos imager
         run: make imager PUSH=true BUILD_ARGS="--cache-from=type=gha,scope=imager --cache-to=type=gha,mode=max,scope=imager"
