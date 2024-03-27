@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	dtb = "rockchip/rk3588s-orangepi5.dtb"
+	dtb           = "rockchip/rk3588s-orangepi5.dtb"
+	overlayPrefix = "rockchip/overlay"
 )
 
 func main() {
@@ -23,8 +24,7 @@ func main() {
 type BoardInstaller struct{}
 
 type boardExtraOptions struct {
-	Console    []string `json:"console"`
-	ConfigFile string   `json:"configFile"`
+	Sata bool `json:"sata"`
 }
 
 func (i *BoardInstaller) GetOptions(extra boardExtraOptions) (overlay.Options, error) {
@@ -34,8 +34,6 @@ func (i *BoardInstaller) GetOptions(extra boardExtraOptions) (overlay.Options, e
 		"sysctl.kernel.kexec_load_disabled=1",
 		"talos.dashboard.disabled=1",
 	}
-
-	kernelArgs = append(kernelArgs, extra.Console...)
 
 	return overlay.Options{
 		Name:       "orangepi-5",
@@ -58,10 +56,39 @@ func (i *BoardInstaller) Install(options overlay.InstallOptions[boardExtraOption
 		return err
 	}
 
+	// Copy dtb files
 	src := filepath.Join(options.ArtifactsPath, "arm64/dtb", dtb)
 	dst := filepath.Join(options.MountPrefix, "/dtb/base", dtb)
+	err = CopyFile(src, dst)
+	if err != nil {
+		return err
+	}
 
-	err = os.MkdirAll(filepath.Dir(dst), 0o600)
+	// Skip copying overlay dtb files if sata is not enabled
+	if !options.ExtraOptions.Sata {
+		return nil
+	}
+
+	// Copy overlay dtb files
+	src = filepath.Join(options.ArtifactsPath, "arm64/dtb", overlayPrefix, "rockchip-rk3588-sata1.dtbo")
+	dst = filepath.Join(options.MountPrefix, "/dtb/overlay", "rockchip-rk3588-sata1.dtbo")
+	err = CopyFile(src, dst)
+	if err != nil {
+		return err
+	}
+
+	src = filepath.Join(options.ArtifactsPath, "arm64/dtb", overlayPrefix, "rockchip-rk3588-sata2.dtbo")
+	dst = filepath.Join(options.MountPrefix, "/dtb/overlay", "rockchip-rk3588-sata2.dtbo")
+	err = CopyFile(src, dst)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CopyFile(src, dst string) error {
+	err := os.MkdirAll(filepath.Dir(dst), 0o600)
 	if err != nil {
 		return err
 	}

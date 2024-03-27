@@ -6,7 +6,7 @@ REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 SOURCE ?= https://github.com/${USERNAME}/${NAME}.git
 AUTHORS ?= Louis S. <louis@schne.id>
 PUSH ?= false
-ARTIFACTS ?= artifacts
+ARTIFACTS ?= ./out
 
 TAG ?= $(shell git describe --tag --always --dirty --match v[0-9]\*)
 
@@ -39,10 +39,12 @@ SATA_EXTENSION_OUTPUT_TAG ?= $(TAG)
 SATA_EXTENSION_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(SATA_EXTENSION_OUTPUT_NAME):$(SATA_EXTENSION_OUTPUT_TAG)
 
 EXTENSIONS :=
+IMAGER_ARGS :=
 SATA ?= false
 SATA_NAME :=
 ifeq ($(SATA),true)
-	EXTENSIONS += --system-extension-image=$(SATA_EXTENSION_OUTPUT_IMAGE)
+#	EXTENSIONS += --system-extension-image=$(SATA_EXTENSION_OUTPUT_IMAGE)
+	IMAGER_ARGS += --sata=true
 	SATA_NAME := -sata
 endif
 
@@ -59,7 +61,7 @@ COMMON_ARGS += --build-arg="IMAGE_AUTHORS="$(AUTHORS)"
 all: build
 
 .PHONY: build
-build: kernel imager installer sata-extension
+build: kernel imager installer
 
 .PHONY: build-%
 build-%:
@@ -121,8 +123,9 @@ sata-extension:
 			--build-arg=VERSION=\"$(SATA_EXTENSION_VERSION)\" \
 			$(BUILD_ARGS)"
 
-$(ARTIFACTS):
-	mkdir -p $@
+.PHONY: artifacts
+artifacts:
+	mkdir -p $(ARTIFACTS)
 	docker container run \
 		--privileged \
 		--platform=$(PLATFORM) \
@@ -131,14 +134,15 @@ $(ARTIFACTS):
 		-v /dev:/dev \
 		--rm \
 		-it \
-		-v ./$@:/out \
+		-v $(ARTIFACTS):/out \
 		$(IMAGER_OUTPUT_IMAGE) \
 		metal \
 		--arch=arm64 \
 		--overlay-name=orangepi-5 \
 		--overlay-image=$(INSTALLER_OUTPUT_IMAGE) \
+		$(IMAGER_ARGS) \
 		$(EXTENSIONS) && \
-		mv $@/metal-arm64.img $@/$(NAME)$(SATA_NAME).img
+		mv $(ARTIFACTS)/metal-arm64.raw.xz $(ARTIFACTS)/$(NAME)$(SATA_NAME).raw.xz
 
 .PHONY: push
 push:

@@ -104,8 +104,8 @@ jobs:
       - name: Build & push Talos installer
         run: make installer PUSH=true BUILD_ARGS="--cache-from=type=gha,scope=installer --cache-to=type=gha,mode=max,scope=installer"
 
-      - name: Build & push SATA extension
-        run: make sata-extension PUSH=true BUILD_ARGS="--cache-from=type=gha,scope=sata-extension --cache-to=type=gha,mode=max,scope=sata-extension"
+      #- name: Build & push SATA extension
+      #  run: make sata-extension PUSH=true BUILD_ARGS="--cache-from=type=gha,scope=sata-extension --cache-to=type=gha,mode=max,scope=sata-extension"
 
       - name: Extract images
         if: startsWith(github.ref, 'refs/tags/v')
@@ -117,4 +117,4 @@ jobs:
         with:
           generate_release_notes: true
           make_latest: true
-          files: artifacts/*
+          files: out/*
