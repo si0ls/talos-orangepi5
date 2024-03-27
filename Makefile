@@ -6,6 +6,7 @@ REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 SOURCE ?= https://github.com/${USERNAME}/${NAME}.git
 AUTHORS ?= Louis S. <louis@schne.id>
 PUSH ?= false
+ARTIFACTS ?= artifacts
 
 TAG ?= $(shell git describe --tag --always --dirty --match v[0-9]\*)
 
@@ -93,7 +94,7 @@ imager: $(IMAGER_TALOS)
 		USERNAME="$(USERNAME)" \
 		TAG="$(TALOS_TAG)" \
 		PKG_KERNEL="$(KERNEL_OUTPUT_IMAGE)" \
-		PLATFORM=linux/arm64 \
+		PLATFORM=$(PLATFORM) \
 		ARCH=arm64 \
 		PUSH=$(PUSH) \
 		target-$@ \
@@ -116,10 +117,27 @@ installer:
 			--build-arg=VERSION=\"$(INSTALLER_VERSION)\" \
 			$(BUILD_ARGS)"
 
+$(ARTIFACTS):
+	mkdir -p $@
+	docker container run \
+		--privileged \
+		--platform=$(PLATFORM) \
+		--pull=always \
+		--net=host \
+		-v /dev:/dev \
+		--rm \
+		-it \
+		-v $@:/out \
+		$(IMAGER_OUTPUT_IMAGE) \
+		metal \
+		--arch=arm64 \
+		--overlay-name=orangepi-5 \
+		--overlay-image=$(INSTALLER_OUTPUT_IMAGE)
+
 .PHONY: push
 push:
 	$(MAKE) build PUSH=true
 
 .PHONY: clean
 clean:
-	rm -rf $(IMAGER_TALOS)
+	rm -rf $(IMAGER_TALOS) $(ARTIFACTS)

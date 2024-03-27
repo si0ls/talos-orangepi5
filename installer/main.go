@@ -59,7 +59,7 @@ func (i *BoardInstaller) Install(options overlay.InstallOptions[boardExtraOption
 	}
 
 	src := filepath.Join(options.ArtifactsPath, "arm64/dtb", dtb)
-	dst := filepath.Join(options.MountPrefix, "/boot/EFI/dtb", dtb)
+	dst := filepath.Join(options.MountPrefix, "/boot/dtb", dtb)
 
 	err = os.MkdirAll(filepath.Dir(dst), 0o600)
 	if err != nil {
