@@ -1,8 +1,6 @@
 ARG KERNEL
-ARG U_BOOT
 
 FROM ${KERNEL} AS kernel
-FROM ${U_BOOT} AS u-boot
 
 FROM golang:1.22-bookworm AS builder
 
