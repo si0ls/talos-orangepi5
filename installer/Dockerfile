@@ -1,6 +1,8 @@
 ARG KERNEL
+ARG U_BOOT
 
 FROM ${KERNEL} AS kernel
+FROM ${U_BOOT} AS u-boot
 
 FROM golang:1.22-bookworm AS builder
 
@@ -39,6 +41,6 @@ LABEL org.opencontainers.image.authors $IMAGE_AUTHORS
 LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
 LABEL org.opencontainers.image.version $IMAGE_VERSION
 
-COPY --from=kernel /dtb/rockchip/rk3588s-orangepi-5.dtb /artifacts/arm64/dtb/rk3588s-orangepi-5.dtb
+COPY --from=kernel /dtb/rockchip/rk3588s-orangepi-5.dtb /artifacts/arm64/dtb/rockchip/rk3588s-orangepi5.dtb
 COPY --from=builder /orangepi-5 /installers/orangepi-5
 COPY profile.yaml /profiles/orangepi-5.yaml
