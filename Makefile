@@ -40,7 +40,7 @@ SATA_EXTENSION_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(SATA_EXTENSION_OUTPUT_
 
 EXTENSIONS :=
 SATA ?= false
-if [ "$(SATA)" = "true" ]; then
+ifeq ($(SATA),true)
 	EXTENSIONS += --system-extension-image=$(SATA_EXTENSION_OUTPUT_IMAGE)
 endif
 
