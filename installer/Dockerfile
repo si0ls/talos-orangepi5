@@ -40,5 +40,7 @@ LABEL org.opencontainers.image.vendor $IMAGE_VENDOR
 LABEL org.opencontainers.image.version $IMAGE_VERSION
 
 COPY --from=kernel /dtb/rockchip/rk3588s-orangepi-5.dtb /artifacts/arm64/dtb/rockchip/rk3588s-orangepi5.dtb
+COPY --from=kernel /dtb/rockchip/overlay/rockchip-rk3588-sata1.dtbo /artifacts/arm64/dtb/rockchip/overlay/rockchip-rk3588-sata1.dtbo
+COPY --from=kernel /dtb/rockchip/overlay/rockchip-rk3588-sata2.dtbo /artifacts/arm64/dtb/rockchip/overlay/rockchip-rk3588-sata2.dtbo
 COPY --from=builder /orangepi-5 /installers/orangepi-5
 COPY profile.yaml /profiles/orangepi-5.yaml

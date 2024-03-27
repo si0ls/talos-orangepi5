@@ -44,7 +44,7 @@ SATA ?= false
 SATA_NAME :=
 ifeq ($(SATA),true)
 #	EXTENSIONS += --system-extension-image=$(SATA_EXTENSION_OUTPUT_IMAGE)
-	IMAGER_ARGS += --sata=true
+	IMAGER_ARGS += --overlay-option=sata=yes
 	SATA_NAME := -sata
 endif
 
