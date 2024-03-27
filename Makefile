@@ -40,8 +40,10 @@ SATA_EXTENSION_OUTPUT_IMAGE ?= $(REGISTRY_AND_USERNAME)/$(SATA_EXTENSION_OUTPUT_
 
 EXTENSIONS :=
 SATA ?= false
+SATA_NAME :=
 ifeq ($(SATA),true)
 	EXTENSIONS += --system-extension-image=$(SATA_EXTENSION_OUTPUT_IMAGE)
+	SATA_NAME := -sata
 endif
 
 BUILD := docker buildx build
@@ -135,7 +137,8 @@ $(ARTIFACTS):
 		--arch=arm64 \
 		--overlay-name=orangepi-5 \
 		--overlay-image=$(INSTALLER_OUTPUT_IMAGE) \
-		$(EXTENSIONS)
+		$(EXTENSIONS) && \
+		mv $@/metal-arm64.img $@/$(NAME)$(SATA_NAME).img
 
 .PHONY: push
 push:
