@@ -1,0 +1,10 @@
+version: v1alpha1
+metadata:
+  name: orangepi-5-sata
+  version: "1.0"
+  author: Louis S. <louis@schne.id>
+  description: |
+    This system extension adds support for SATA on the M.2 slot of the Orange Pi 5.
+  compatibility:
+    talos:
+      version: ">= v1.7.0-alpha.1"
